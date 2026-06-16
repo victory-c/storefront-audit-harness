@@ -1,0 +1,56 @@
+{
+  "store": "gingerpeople",
+  "audit_path": "sample_output/gingerpeople/audit.json",
+  "manifest_path": "artifacts/gingerpeople/manifest.json",
+  "layer1": {
+    "ok": true,
+    "errors": [],
+    "warnings": []
+  },
+  "layer2": {
+    "status": "ok",
+    "produced_by": "agent-as-judge (no ANTHROPIC_API_KEY at generation time); identical schema to eval/judge.py run_judge() output",
+    "model": "claude-opus-4-8 (interactive)",
+    "rubric_version": 1,
+    "dimensions": {
+      "evidence_groundedness": {
+        "score": 3,
+        "justification": "All experiments cite genuine 403 'Just a moment...' artifacts (pg_1944edde, pg_af230bb6), but roughly half are explicitly inferred from the access state rather than observed page content."
+      },
+      "hypothesis_quality": {
+        "score": 3,
+        "justification": "Hypotheses are plausible and falsifiable and tied to the documented block, though several are infrastructure inferences rather than content observations."
+      },
+      "experiment_actionability": {
+        "score": 4,
+        "justification": "WAF allow-listing and edge-rule changes (exp-ac0e55000001/02, exp-9e4f00000002) are concrete and buildable."
+      },
+      "prioritization": {
+        "score": 4,
+        "justification": "Correctly identifies the bot-challenge block as the #1 revenue issue and keeps confidence honestly low."
+      },
+      "pillar_diversity": {
+        "score": 2,
+        "justification": "Spans all five pillars only nominally; the AOV and Retention experiments are variations on the same access barrier rather than distinct content levers."
+      },
+      "specificity_vs_slop": {
+        "score": 3,
+        "justification": "Specific to gingerpeople's actual Cloudflare block and ginger category, but lacks store-content specificity because nothing was crawlable."
+      },
+      "competitor_quality": {
+        "score": 3,
+        "justification": "Real ginger competitors with adaptable patterns, but store_edge is assessed externally since the storefront is uncrawlable."
+      },
+      "technical_rigor": {
+        "score": 4,
+        "justification": "Technical checks are strongly grounded in the observed 403 evidence and correctly mark Fail vs Warn."
+      }
+    },
+    "composite": 64.0,
+    "top_strength": "Correctly and honestly surfaces the bot-challenge block as the dominant revenue issue, with grounded technical checks.",
+    "top_weakness": "Pillar diversity is nominal: AOV/Retention experiments restate the same access barrier instead of distinct content levers.",
+    "fix_suggestion": "Re-crawl via a real browser to bypass the Cloudflare challenge, then regenerate content-level Conversion/AOV/Retention experiments.",
+    "review_threshold": 70,
+    "needs_human_review": true
+  }
+}

@@ -1,0 +1,326 @@
+{
+  "store": "gingerpeople",
+  "store_url": "https://gingerpeople.com/",
+  "generated_at": "2026-06-15T12:30:00Z",
+  "harness_version": "0.1.0",
+  "executive_summary": "Ginger People has the proof but leaks the purchase handoff. The hero GIN GINS product page carries heavy social proof yet the captured buying area shows no price, add-to-cart, or clear retailer step, so high-intent shoppers stall at the moment of decision. The strongest first move is structural: give every product a buying box that resolves \"how do I get this\" into one obvious choice.\n\nThe two adjacent purchase surfaces compound the problem. The primary-nav Where To Buy page resolves to blog and footer content with no visible store locator, and the /cart URL returns a branded 404 that silently kills returning sessions, tracking links, and partner referrals. Together they weaken every product page that tells shoppers to \"find it locally.\"\n\nThe content moat is strong and under-commercialized. Recipes, GLP-1 education, and nausea pages can become acquisition and retention surfaces with guided shopping, routines, and bundles. The experiments below span all five pillars, sequenced so the structural conversion fixes ship first and the merchandising and acquisition bets follow.",
+  "experiments": [
+    {
+      "exp_id": "exp-c07a00000001",
+      "title": "Add a buying box to every product",
+      "pillar": "Conversion",
+      "affected_surface": "GIN GINS Original PDP (pattern applies to all PDPs)",
+      "url": "https://gingerpeople.com/products/gin-gins-original-ginger-chews/",
+      "evidence": {
+        "manifest_id": "pg_a1b2",
+        "url": "https://gingerpeople.com/products/gin-gins-original-ginger-chews/",
+        "screenshot_path": "artifacts/gingerpeople/pages/pg_a1b2.png",
+        "note": null
+      },
+      "hypothesis": "Conversion improves when product-page intent is turned into a clear purchase choice instead of an ambiguous \"buy online or find it\" with no visible buying module.",
+      "primary_change": "Add a persistent \"Choose how to buy\" box under the product title with Buy online, Find near me, and Add to routine plus retailer logos.",
+      "primary_kpi": "Outbound retailer click rate",
+      "decision_rule": "Ship if outbound retailer click rate improves without hurting product-page bounce or time-on-page.",
+      "expected_lift": "+12–20%",
+      "confidence": 78
+    },
+    {
+      "exp_id": "exp-c07a00000002",
+      "title": "Rebuild the Where To Buy page",
+      "pillar": "Conversion",
+      "affected_surface": "Where To Buy (primary nav)",
+      "url": "https://gingerpeople.com/where-to-buy-the-ginger-people-products/",
+      "evidence": {
+        "manifest_id": "pg_0004",
+        "url": "https://gingerpeople.com/where-to-buy-the-ginger-people-products/",
+        "screenshot_path": "artifacts/gingerpeople/pages/pg_0004.png",
+        "note": null
+      },
+      "hypothesis": "Conversion improves by recovering high-intent shoppers who click the primary Where To Buy nav item and currently see no retailer handoff, only header and footer content.",
+      "primary_change": "Replace the Where To Buy body with a purchase handoff: ZIP store locator, shop-online retailer cards, product-family filters, and a fallback ZIP capture.",
+      "primary_kpi": "Outbound retailer click rate",
+      "decision_rule": "Ship if outbound retailer click rate improves without hurting Where To Buy session duration.",
+      "expected_lift": "+15–25%",
+      "confidence": 82
+    },
+    {
+      "exp_id": "exp-a0a700000001",
+      "title": "Sell a travel nausea kit",
+      "pillar": "AOV",
+      "affected_surface": "New kit PDP + cross-promotion on Ginger Rescue PDPs",
+      "url": "https://gingerpeople.com/products/travel-stomach-rescue-kit/",
+      "evidence": {
+        "manifest_id": "pg_a1b2",
+        "url": "https://gingerpeople.com/products/gin-gins-original-ginger-chews/",
+        "screenshot_path": null,
+        "note": "Mirrors the separate nausea-relief formats currently merchandised one-by-one on the captured PDP; bundle them into one travel-ready kit."
+      },
+      "hypothesis": "Average order value rises by turning three separate nausea-relief formats into one higher-value travel-ready bundle aimed at motion and morning sickness.",
+      "primary_change": "Launch a Travel Stomach Rescue Kit containing the three Ginger Rescue formats, promoted on Ginger Rescue PDPs and the travel-nausea page.",
+      "primary_kpi": "AOV among Ginger Rescue PDP visitors",
+      "decision_rule": "Ship if AOV rises by at least $3 without hurting Ginger Rescue PDP conversion.",
+      "expected_lift": "+8–14%",
+      "confidence": 70
+    },
+    {
+      "exp_id": "exp-a0a700000002",
+      "title": "Build a GIN GINS flavor sampler",
+      "pillar": "AOV",
+      "affected_surface": "GIN GINS category + new sampler PDP",
+      "url": "https://gingerpeople.com/products/gin-gins-flavor-tour/",
+      "evidence": {
+        "manifest_id": "pg_0003",
+        "url": "https://gingerpeople.com/the-ginger-people-products/",
+        "screenshot_path": null,
+        "note": "The captured products grid lists many flavors with no trial entry point; a sampler gives first-time candy shoppers one higher-value option."
+      },
+      "hypothesis": "Average order value rises when first-time candy shoppers can buy a multi-flavor trial instead of choosing a single flavor from a long list.",
+      "primary_change": "Launch a GIN GINS Flavor Tour sampler bundling the core chew flavors into one SKU positioned for gifting and first trial.",
+      "primary_kpi": "AOV among first-time candy shoppers",
+      "decision_rule": "Ship if first-time AOV rises by at least $4 without hurting overall candy conversion.",
+      "expected_lift": "+7–12%",
+      "confidence": 72
+    },
+    {
+      "exp_id": "exp-9e7e00000001",
+      "title": "Add a reorder reminder to PDPs",
+      "pillar": "Retention",
+      "affected_surface": "All product detail pages",
+      "url": "https://gingerpeople.com/products/gin-gins-original-ginger-chews/",
+      "evidence": {
+        "manifest_id": "pg_a1b2",
+        "url": "https://gingerpeople.com/products/gin-gins-original-ginger-chews/",
+        "screenshot_path": null,
+        "note": null
+      },
+      "hypothesis": "Repeat purchase rate improves when consumable PDPs offer an opt-in reorder reminder that matches how often shoppers actually finish a pack.",
+      "primary_change": "Add a lightweight \"remind me to reorder\" opt-in to PDPs with a default cadence and a one-tap reorder link in the reminder.",
+      "primary_kpi": "30-day repeat purchase rate",
+      "decision_rule": "Ship if 30-day repeat purchase rate improves without hurting first-order conversion.",
+      "expected_lift": "+6–12%",
+      "confidence": 68
+    },
+    {
+      "exp_id": "exp-9e7e00000002",
+      "title": "Capture a post-purchase ginger routine",
+      "pillar": "Retention",
+      "affected_surface": "Homepage + order confirmation",
+      "url": "https://gingerpeople.com/",
+      "evidence": {
+        "manifest_id": "pg_0001",
+        "url": "https://gingerpeople.com/",
+        "screenshot_path": "artifacts/gingerpeople/pages/pg_0001.png",
+        "note": null
+      },
+      "hypothesis": "Returning-customer rate improves when first-time buyers are invited into a named ginger routine they can subscribe to rather than re-discovering products each time.",
+      "primary_change": "Add a homepage and confirmation-page module that captures email into a named routine with a sample first-week plan.",
+      "primary_kpi": "Returning-customer rate",
+      "decision_rule": "Ship if returning-customer rate improves without raising email unsubscribe rate.",
+      "expected_lift": "+5–10%",
+      "confidence": 65
+    },
+    {
+      "exp_id": "exp-acac00000001",
+      "title": "Create a pregnancy nausea page",
+      "pillar": "Acquisition",
+      "affected_surface": "New page at /morning-sickness-ginger/",
+      "url": "https://gingerpeople.com/morning-sickness-ginger/",
+      "evidence": {
+        "manifest_id": "pg_0003",
+        "url": "https://gingerpeople.com/the-ginger-people-products/",
+        "screenshot_path": null,
+        "note": "Existing category copy already uses morning-sickness language; concentrate it into one compliant destination with product choices."
+      },
+      "hypothesis": "Landing-page conversion improves by matching high-anxiety morning-sickness visitors to testimonials, FAQs, and product choices in one compliant destination.",
+      "primary_change": "Build /morning-sickness-ginger/ from existing testimonials and FAQ content with ask-your-clinician language and buy/find choices.",
+      "primary_kpi": "Landing-page conversion rate",
+      "decision_rule": "Ship if landing-page conversion exceeds the average of existing health pages without compliance flags.",
+      "expected_lift": "+10–16%",
+      "confidence": 70
+    },
+    {
+      "exp_id": "exp-acac00000002",
+      "title": "Add a find-your-ginger quiz",
+      "pillar": "Acquisition",
+      "affected_surface": "New page at /find-your-ginger/",
+      "url": "https://gingerpeople.com/find-your-ginger/",
+      "evidence": {
+        "manifest_id": "pg_0003",
+        "url": "https://gingerpeople.com/the-ginger-people-products/",
+        "screenshot_path": null,
+        "note": "Need-language is buried in the captured category page; a guided quiz routes intent before shoppers bounce from a dense product list."
+      },
+      "hypothesis": "Landing-page conversion improves by routing health-intent and snack-intent visitors to the right product family before they bounce from a dense product list.",
+      "primary_change": "Create /find-your-ginger/ with five need prompts that each return a recommendation, a proof quote, and buy/find choices, linked from the nav.",
+      "primary_kpi": "Landing-page conversion rate",
+      "decision_rule": "Ship if landing-page conversion improves without hurting site-wide conversion rate.",
+      "expected_lift": "+12–18%",
+      "confidence": 72
+    },
+    {
+      "exp_id": "exp-9e9f00000001",
+      "title": "Make the empty cart useful",
+      "pillar": "Conversion",
+      "affected_surface": "/cart URL",
+      "url": "https://gingerpeople.com/cart",
+      "evidence": {
+        "manifest_id": "pg_0005",
+        "url": "https://gingerpeople.com/cart",
+        "screenshot_path": "artifacts/gingerpeople/pages/pg_0005.png",
+        "note": null
+      },
+      "hypothesis": "Cart-edge exits drop when the /cart URL returns a purchase-recovery page instead of a branded 404 that strands returning users, old links, and partner referrals.",
+      "primary_change": "Replace the /cart 404 with the real cart or a recovery page offering continue shopping, find a store, shop online retailers, and support.",
+      "primary_kpi": "/cart exit rate",
+      "decision_rule": "Ship if /cart exit rate drops without hurting site-wide conversion.",
+      "expected_lift": "+10–20%",
+      "confidence": 85
+    },
+    {
+      "exp_id": "exp-9e9f00000002",
+      "title": "Compress homepage hero imagery",
+      "pillar": "Conversion",
+      "affected_surface": "Homepage hero",
+      "url": "https://gingerpeople.com/",
+      "evidence": {
+        "manifest_id": "pg_0001",
+        "url": "https://gingerpeople.com/",
+        "screenshot_path": null,
+        "note": null
+      },
+      "hypothesis": "Largest Contentful Paint improves when oversized hero assets are compressed and served responsively, reducing time-to-first-meaningful-paint on entry.",
+      "primary_change": "Serve responsive, next-gen-format hero images with explicit dimensions and lazy-load below-the-fold media on the homepage.",
+      "primary_kpi": "Largest Contentful Paint",
+      "decision_rule": "Ship if LCP improves by at least 0.5s with no cumulative layout shift regression.",
+      "expected_lift": "+3–8%",
+      "confidence": 60
+    }
+  ],
+  "competitors": [
+    {
+      "name": "Dramamine",
+      "domain": "dramamine.com",
+      "positioning": "OTC motion-sickness relief",
+      "makes_easier": "Immediate use-case clarity from shelf to cart",
+      "store_edge": "Natural ginger formats with candy and snack permission",
+      "pattern_to_adapt": "Dedicated nausea and travel pages with product-choice modules",
+      "source_url": "https://www.dramamine.com/",
+      "source_type": "site_visit",
+      "source_manifest_id": null
+    },
+    {
+      "name": "Tummydrops",
+      "domain": "tummydrops.com",
+      "positioning": "Ginger and peppermint drops for nausea and digestive comfort",
+      "makes_easier": "Symptom-specific shopping",
+      "store_edge": "Broader catalog, recipes, and mainstream candy formats",
+      "pattern_to_adapt": "Symptom-led navigation and format comparisons",
+      "source_url": "https://tummydrops.com/",
+      "source_type": "search",
+      "source_manifest_id": null
+    },
+    {
+      "name": "Chimes Gourmet",
+      "domain": "chimesgourmet.com",
+      "positioning": "Ginger chews and candy variety",
+      "makes_easier": "Simple flavor-led candy shopping",
+      "store_edge": "Stronger functional use cases, reviews, recipes, and family story",
+      "pattern_to_adapt": "Flavor sampler and heat/flavor comparison",
+      "source_url": "https://chimesgourmet.com/",
+      "source_type": "manual",
+      "source_manifest_id": null
+    }
+  ],
+  "technical_checks": [
+    {
+      "check": "SSL Certificate",
+      "status": "Pass",
+      "detail": "HTTPS storefront loaded successfully.",
+      "evidence_manifest_id": "pg_0001"
+    },
+    {
+      "check": "HTTPS Redirect",
+      "status": "Pass",
+      "detail": "The inspected URL resolved over HTTPS.",
+      "evidence_manifest_id": "pg_0001"
+    },
+    {
+      "check": "Sitemap",
+      "status": "Pass",
+      "detail": "sitemap.xml present and parsed.",
+      "evidence_manifest_id": "pg_0a10"
+    },
+    {
+      "check": "Robots.txt",
+      "status": "Pass",
+      "detail": "robots.txt present with a Sitemap directive.",
+      "evidence_manifest_id": "pg_00ff"
+    },
+    {
+      "check": "Critical Pages Loading",
+      "status": "Warn",
+      "detail": "Homepage and categories loaded; /cart returned 404.",
+      "evidence_manifest_id": "pg_0005"
+    },
+    {
+      "check": "Meta Tags & Social Previews",
+      "status": "Warn",
+      "detail": "Titles visible; Open Graph tags not fully inspected.",
+      "evidence_manifest_id": null
+    },
+    {
+      "check": "Structured Data",
+      "status": "Warn",
+      "detail": "JSON-LD not inspected in this pass.",
+      "evidence_manifest_id": null
+    },
+    {
+      "check": "Favicon",
+      "status": "Pass",
+      "detail": "Favicon present in the document head.",
+      "evidence_manifest_id": null
+    },
+    {
+      "check": "Mobile-Friendly",
+      "status": "Warn",
+      "detail": "Desktop-first audit; viewport meta present.",
+      "evidence_manifest_id": null
+    },
+    {
+      "check": "Page Speed Mobile",
+      "status": "Warn",
+      "detail": "No Lighthouse mobile run performed.",
+      "evidence_manifest_id": null
+    },
+    {
+      "check": "Page Speed Desktop",
+      "status": "Warn",
+      "detail": "No Lighthouse desktop run performed.",
+      "evidence_manifest_id": null
+    },
+    {
+      "check": "Broken Links",
+      "status": "Fail",
+      "detail": "/cart returned a branded 404.",
+      "evidence_manifest_id": "pg_0005"
+    },
+    {
+      "check": "Image Optimization",
+      "status": "Warn",
+      "detail": "Large hero assets; no byte-level audit run.",
+      "evidence_manifest_id": null
+    },
+    {
+      "check": "Cookie/Privacy",
+      "status": "Warn",
+      "detail": "Privacy Policy link present; consent mechanics not inspected.",
+      "evidence_manifest_id": null
+    },
+    {
+      "check": "Checkout Reachable",
+      "status": "Fail",
+      "detail": "Cart edge at /cart not reachable; no checkout entered.",
+      "evidence_manifest_id": "pg_0005"
+    }
+  ]
+}

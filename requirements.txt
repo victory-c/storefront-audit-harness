@@ -1,0 +1,6 @@
+jsonschema[format-nongpl]>=4.25
+
+# Optional — only needed for the LLM phases (reason/write and eval Layer 2 judge).
+# Crawl, validation, rendering, and eval Layer 1 run on stdlib + jsonschema alone.
+anthropic>=0.40
+pyyaml>=6.0

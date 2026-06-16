@@ -1,0 +1,262 @@
+{
+  "store": "gingerpeople",
+  "store_url": "https://gingerpeople.com/",
+  "generated_at": "2026-06-16T04:10:00Z",
+  "harness_version": "0.1.0",
+  "executive_summary": "The single most expensive issue at gingerpeople.com right now is that the storefront is not reachable by automated clients at all. Every surface the harness requested — homepage, /cart, robots.txt and sitemap.xml — returned an HTTP 403 'Just a moment...' Cloudflare bot-management challenge instead of page content. That means this audit could not observe any product, pricing, or merchandising detail; what follows is an access-and-infrastructure audit, and a content-level CRO audit requires an unblocked (real-browser) crawl.\n\nThis is not a cosmetic finding. An interactive bot challenge that returns 403 to non-JavaScript clients blocks search-engine and social-preview crawlers (hurting organic discovery and link previews), blocks the emerging class of AI shopping and comparison agents (hurting agentic-commerce demand), blocks accessibility scanners and link/uptime monitors, and adds a pre-paint interstitial that can raise bounce for real human visitors on slow or privacy-restricted browsers. Returning, high-intent sessions arriving via email, SMS, retargeting, or affiliate deep links to /cart hit the same wall — a silent loss of the most valuable traffic.\n\nThe experiments below span all five pillars, but they are deliberately framed around the access barrier and its measurable revenue consequences, with honestly modest confidence because no page content was observable. The priority is to make verified crawlers, agents, and returning human sessions pass through protection cleanly; once the store is observable again, re-run the harness to produce the content-level Conversion/AOV/Retention experiments this brand likely warrants.",
+  "experiments": [
+    {
+      "exp_id": "exp-ac0e55000001",
+      "title": "Allow verified search and AI agents through bot protection",
+      "pillar": "Acquisition",
+      "affected_surface": "Edge/WAF bot-management policy (site-wide)",
+      "url": "https://gingerpeople.com/",
+      "evidence": {
+        "manifest_id": "pg_1944edde",
+        "url": "https://gingerpeople.com/",
+        "screenshot_path": null,
+        "note": "Homepage returned HTTP 403 with a Cloudflare 'Just a moment...' interactive challenge instead of HTML, so non-browser clients cannot read the page."
+      },
+      "hypothesis": "Organic and agentic discovery improves by letting verified search engines, social-preview bots, and AI shopping agents reach real HTML, because every non-JavaScript client is currently served a 403 challenge and sees no content.",
+      "primary_change": "Configure the WAF to allow-list verified crawler/agent traffic and serve real page HTML to them instead of the interactive challenge.",
+      "primary_kpi": "Indexed pages and organic impressions",
+      "decision_rule": "Ship if indexed pages and organic impressions rise without a measurable increase in abusive bot load.",
+      "expected_lift": "+10-25%",
+      "confidence": 64
+    },
+    {
+      "exp_id": "exp-ac0e55000002",
+      "title": "Make robots.txt and sitemap.xml crawler-reachable",
+      "pillar": "Acquisition",
+      "affected_surface": "robots.txt and sitemap.xml",
+      "url": "https://gingerpeople.com/sitemap.xml",
+      "evidence": {
+        "manifest_id": "pg_0fbaca19",
+        "url": "https://gingerpeople.com/sitemap.xml",
+        "screenshot_path": null,
+        "note": "Both sitemap.xml (pg_0fbaca19) and robots.txt (pg_e06b450e) returned 403 challenges, so search engines cannot fetch the crawl directives or URL inventory."
+      },
+      "hypothesis": "Crawl efficiency and indexation improve by exempting robots.txt and sitemap.xml from the challenge, because search engines currently receive a 403 for both and cannot discover the URL set.",
+      "primary_change": "Add edge rules that always serve robots.txt and sitemap.xml as plain, un-challenged responses.",
+      "primary_kpi": "Pages crawled and indexed per week",
+      "decision_rule": "Ship if weekly crawled/indexed pages increase with no rise in malicious sitemap scraping.",
+      "expected_lift": "+8-18%",
+      "confidence": 62
+    },
+    {
+      "exp_id": "exp-9e4f00000001",
+      "title": "Replace the interactive challenge for human traffic",
+      "pillar": "Performance",
+      "affected_surface": "First-visit entry experience (site-wide)",
+      "url": "https://gingerpeople.com/",
+      "evidence": {
+        "manifest_id": "pg_1944edde",
+        "url": "https://gingerpeople.com/",
+        "screenshot_path": null,
+        "note": "The captured homepage body is the Cloudflare 'Just a moment...' interstitial, which runs a JavaScript check before any store content can paint."
+      },
+      "hypothesis": "First-visit bounce drops by replacing the interactive 'Just a moment...' interstitial with a lower-friction managed mode for human traffic, because the challenge delays first contentful paint on every cold visit.",
+      "primary_change": "Switch human traffic from an interactive challenge to a transparent/managed challenge mode and tune sensitivity to reduce interstitial frequency.",
+      "primary_kpi": "Homepage entry bounce rate",
+      "decision_rule": "Ship if entry bounce drops without a meaningful increase in confirmed bot abuse.",
+      "expected_lift": "+5-15%",
+      "confidence": 58
+    },
+    {
+      "exp_id": "exp-9e4f00000002",
+      "title": "Stop the /cart edge from returning a challenge",
+      "pillar": "Performance",
+      "affected_surface": "/cart URL",
+      "url": "https://gingerpeople.com/cart",
+      "evidence": {
+        "manifest_id": "pg_af230bb6",
+        "url": "https://gingerpeople.com/cart",
+        "screenshot_path": null,
+        "note": "The /cart URL returned a 403 'Just a moment...' challenge rather than a cart or recovery page."
+      },
+      "hypothesis": "High-intent session loss drops by ensuring /cart resolves to a real cart or recovery page for human sessions, because a 403 challenge at the cart URL strands returning users, tracking links, and partner referrals.",
+      "primary_change": "Ensure /cart bypasses the interactive challenge for human sessions and returns the cart or a branded recovery page with continue-shopping and support links.",
+      "primary_kpi": "/cart exit rate",
+      "decision_rule": "Ship if /cart exit rate drops without hurting site-wide conversion.",
+      "expected_lift": "+8-18%",
+      "confidence": 56
+    },
+    {
+      "exp_id": "exp-c04e55000001",
+      "title": "Recover returning sessions blocked at entry",
+      "pillar": "Conversion",
+      "affected_surface": "Returning/high-intent session entry",
+      "url": "https://gingerpeople.com/cart",
+      "evidence": {
+        "manifest_id": "pg_af230bb6",
+        "url": "https://gingerpeople.com/cart",
+        "screenshot_path": null,
+        "note": "Inferred from the 403 challenge on /cart, the most common deep-link destination for returning and retargeted users."
+      },
+      "hypothesis": "Returning-visitor conversion improves by letting recognized returning sessions skip the interactive challenge, because high-intent users arriving via retargeting and cart deep links currently hit a 403 wall before they can transact.",
+      "primary_change": "Allow-list authenticated/returning sessions (clearance cookie or first-party signal) so they reach the store without an interactive challenge.",
+      "primary_kpi": "Returning-visitor conversion rate",
+      "decision_rule": "Ship if returning-visitor conversion improves without a rise in fraudulent sessions.",
+      "expected_lift": "+6-14%",
+      "confidence": 54
+    },
+    {
+      "exp_id": "exp-c04e55000002",
+      "title": "Provide a no-JavaScript fallback to browse and buy",
+      "pillar": "Conversion",
+      "affected_surface": "Progressive-enhancement fallback (site-wide)",
+      "url": "https://gingerpeople.com/",
+      "evidence": {
+        "manifest_id": "pg_1944edde",
+        "url": "https://gingerpeople.com/",
+        "screenshot_path": null,
+        "note": "The only content served to a non-JS client was the 'Just a moment...' challenge, so JS-disabled, privacy-browser, and some assistive-tech users see no store."
+      },
+      "hypothesis": "Conversion among privacy-browser and assistive-technology users improves by offering a no-JavaScript fallback path to the catalog and buy flow, because such users currently receive only the challenge interstitial.",
+      "primary_change": "Serve a progressively-enhanced fallback so core catalog browsing and add-to-cart work without passing an interactive JavaScript challenge.",
+      "primary_kpi": "Conversion rate among no-JS / assistive sessions",
+      "decision_rule": "Ship if conversion among no-JS/assistive sessions improves without weakening abuse protection.",
+      "expected_lift": "+3-9%",
+      "confidence": 48
+    },
+    {
+      "exp_id": "exp-a0a455000001",
+      "title": "Unblock campaign deep links that pre-load carts",
+      "pillar": "AOV",
+      "affected_surface": "Campaign/affiliate deep-link entry paths",
+      "url": "https://gingerpeople.com/cart",
+      "evidence": {
+        "manifest_id": "pg_af230bb6",
+        "url": "https://gingerpeople.com/cart",
+        "screenshot_path": null,
+        "note": "Inferred from the 403 on /cart: links that pre-load multi-item carts or bundles land on the same challenged URL."
+      },
+      "hypothesis": "Order value from campaign channels rises by exempting known deep-link/cart-permalink entry paths from the interactive challenge, because pre-loaded multi-item carts currently fail at a 403 before checkout.",
+      "primary_change": "Exempt verified campaign and cart-permalink entry paths from the interactive challenge so multi-item carts load intact.",
+      "primary_kpi": "Average order value from email/affiliate deep-link sessions",
+      "decision_rule": "Ship if deep-link-session AOV rises by at least $3 without increasing fraud chargebacks.",
+      "expected_lift": "+4-10%",
+      "confidence": 46
+    },
+    {
+      "exp_id": "exp-a0a455000002",
+      "title": "Expose an agent-readable product feed",
+      "pillar": "AOV",
+      "affected_surface": "Product feed for comparison/AI agents",
+      "url": "https://gingerpeople.com/",
+      "evidence": {
+        "manifest_id": "pg_1944edde",
+        "url": "https://gingerpeople.com/",
+        "screenshot_path": null,
+        "note": "Inferred from the homepage 403: AI shopping and comparison agents that could assemble baskets cannot read the storefront at all."
+      },
+      "hypothesis": "Basket revenue from agent and comparison channels rises by publishing an agent-accessible product feed, because every automated assistant that could assemble a multi-item order is currently blocked by the challenge.",
+      "primary_change": "Publish a stable, un-challenged structured product feed (and allow-list reputable shopping agents) so assistants can read catalog and price.",
+      "primary_kpi": "Orders and AOV attributed to agent/comparison channels",
+      "decision_rule": "Ship if agent-channel orders/AOV grow without degrading first-party margins.",
+      "expected_lift": "+3-9%",
+      "confidence": 44
+    },
+    {
+      "exp_id": "exp-9e7e55000001",
+      "title": "Unblock lifecycle email/SMS deep links",
+      "pillar": "Retention",
+      "affected_surface": "Lifecycle email/SMS link destinations",
+      "url": "https://gingerpeople.com/cart",
+      "evidence": {
+        "manifest_id": "pg_af230bb6",
+        "url": "https://gingerpeople.com/cart",
+        "screenshot_path": null,
+        "note": "Inferred from the 403 on /cart: returning customers clicking lifecycle links to cart/account hit the challenge."
+      },
+      "hypothesis": "Repeat purchase rate improves by ensuring lifecycle email/SMS links for returning customers bypass the interactive challenge, because those links currently route high-intent repeat buyers into a 403.",
+      "primary_change": "Tag and allow-list lifecycle deep links (and recognized returning sessions) so repeat customers land directly on the intended page.",
+      "primary_kpi": "30-day repeat purchase rate from lifecycle links",
+      "decision_rule": "Ship if repeat purchase rate from lifecycle links improves without a rise in link abuse.",
+      "expected_lift": "+5-12%",
+      "confidence": 52
+    },
+    {
+      "exp_id": "exp-9e7e55000002",
+      "title": "Reduce challenge friction on account/login surfaces",
+      "pillar": "Retention",
+      "affected_surface": "Account login / reorder surfaces",
+      "url": "https://gingerpeople.com/",
+      "evidence": {
+        "manifest_id": "pg_1944edde",
+        "url": "https://gingerpeople.com/",
+        "screenshot_path": null,
+        "note": "Inferred from the site-wide 403 challenge observed on the homepage: returning buyers attempting to log in or reorder face the same interstitial."
+      },
+      "hypothesis": "Reorder rate improves by minimizing challenge friction on account/login and reorder surfaces, because returning buyers must clear an interactive challenge before they can authenticate and repurchase.",
+      "primary_change": "Prioritize recognized returning/authenticated sessions through protection with minimal friction on login and reorder paths.",
+      "primary_kpi": "Returning-customer login-to-reorder completion rate",
+      "decision_rule": "Ship if login-to-reorder completion improves without weakening account-takeover defenses.",
+      "expected_lift": "+4-10%",
+      "confidence": 50
+    }
+  ],
+  "competitors": [
+    {
+      "name": "Dramamine",
+      "domain": "dramamine.com",
+      "positioning": "OTC motion-sickness relief with a natural/ginger line",
+      "makes_easier": "Immediate symptom-to-product clarity and an accessible, crawlable site",
+      "store_edge": "Deeper ginger specialization and food/candy formats (assessed from category knowledge; storefront not crawlable)",
+      "pattern_to_adapt": "Keep symptom/use-case pages reachable to crawlers and shoppers without a challenge wall",
+      "source_url": "https://www.dramamine.com/",
+      "source_type": "manual",
+      "source_manifest_id": null
+    },
+    {
+      "name": "Tummydrops",
+      "domain": "tummydrops.com",
+      "positioning": "Ginger and peppermint drops for nausea and digestive comfort",
+      "makes_easier": "Symptom-specific shopping on a fast, openly accessible storefront",
+      "store_edge": "Broader ginger catalog and recipe/education content (assessed externally)",
+      "pattern_to_adapt": "Symptom-led navigation served without bot-challenge friction",
+      "source_url": "https://www.tummydrops.com/",
+      "source_type": "manual",
+      "source_manifest_id": null
+    },
+    {
+      "name": "Reed's",
+      "domain": "drinkreeds.com",
+      "positioning": "Ginger beverages and ginger candy",
+      "makes_easier": "Beverage-led discovery and familiar retail presence",
+      "store_edge": "Stronger functional/health use cases for ginger (assessed externally)",
+      "pattern_to_adapt": "Accessible product discovery and retailer handoff per product family",
+      "source_url": "https://www.drinkreeds.com/",
+      "source_type": "manual",
+      "source_manifest_id": null
+    },
+    {
+      "name": "Chimes Gourmet",
+      "domain": "chimesgourmet.com",
+      "positioning": "Ginger chews and candy variety",
+      "makes_easier": "Simple flavor-led candy shopping on a reachable site",
+      "store_edge": "Stronger functional positioning and (likely) richer reviews/recipes (assessed externally)",
+      "pattern_to_adapt": "Flavor/heat comparison and sampler entry points kept openly accessible",
+      "source_url": "https://www.chimesgourmet.com/",
+      "source_type": "manual",
+      "source_manifest_id": null
+    }
+  ],
+  "technical_checks": [
+    { "check": "SSL Certificate", "status": "Pass", "detail": "TLS handshake succeeded; the storefront responded over HTTPS (challenge served over HTTPS).", "evidence_manifest_id": "pg_1944edde" },
+    { "check": "HTTPS Redirect", "status": "Pass", "detail": "Requests resolved over HTTPS.", "evidence_manifest_id": "pg_1944edde" },
+    { "check": "Sitemap", "status": "Fail", "detail": "sitemap.xml returned 403 (bot challenge); not machine-readable.", "evidence_manifest_id": "pg_0fbaca19" },
+    { "check": "Robots.txt", "status": "Fail", "detail": "robots.txt returned 403 (bot challenge); crawl directives not machine-readable.", "evidence_manifest_id": "pg_e06b450e" },
+    { "check": "Critical Pages Loading", "status": "Fail", "detail": "Homepage and /cart returned 403 'Just a moment...' challenges instead of content.", "evidence_manifest_id": "pg_1944edde" },
+    { "check": "Meta Tags & Social Previews", "status": "Fail", "detail": "Challenge interstitial served instead of page HTML; no meta/OG tags available to crawlers.", "evidence_manifest_id": "pg_1944edde" },
+    { "check": "Structured Data", "status": "Fail", "detail": "No page HTML served to non-JS clients; structured data not assessable.", "evidence_manifest_id": "pg_1944edde" },
+    { "check": "Favicon", "status": "Warn", "detail": "Not assessable; storefront not reachable via an HTTP client.", "evidence_manifest_id": null },
+    { "check": "Mobile-Friendly", "status": "Warn", "detail": "Not assessable from a blocked crawl.", "evidence_manifest_id": null },
+    { "check": "Page Speed Mobile", "status": "Warn", "detail": "Not measured; an interactive bot challenge precedes any content.", "evidence_manifest_id": "pg_1944edde" },
+    { "check": "Page Speed Desktop", "status": "Warn", "detail": "Not measured; an interactive bot challenge precedes any content.", "evidence_manifest_id": "pg_1944edde" },
+    { "check": "Broken Links", "status": "Fail", "detail": "The /cart edge returned a 403 challenge; internal link reachability could not be verified.", "evidence_manifest_id": "pg_af230bb6" },
+    { "check": "Image Optimization", "status": "Warn", "detail": "Not assessable from a blocked crawl.", "evidence_manifest_id": null },
+    { "check": "Cookie/Privacy", "status": "Warn", "detail": "The challenge sets clearance cookies; consent mechanics could not be inspected.", "evidence_manifest_id": "pg_1944edde" },
+    { "check": "Checkout Reachable", "status": "Fail", "detail": "The cart/checkout edge returned 403; checkout was not reachable to the agent.", "evidence_manifest_id": "pg_af230bb6" }
+  ]
+}

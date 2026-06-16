@@ -1,0 +1,92 @@
+{
+  "store": "gingerpeople",
+  "store_url": "https://gingerpeople.com/",
+  "captured_at": "2026-06-15T12:00:00Z",
+  "harness_version": "0.1.0",
+  "pages": [
+    {
+      "id": "pg_0001",
+      "url": "https://gingerpeople.com/",
+      "status_code": 200,
+      "page_type": "homepage",
+      "title": "The Ginger People | America's #1 Ginger Brand",
+      "screenshot_path": "artifacts/gingerpeople/pages/pg_0001.png",
+      "text_path": "artifacts/gingerpeople/pages/pg_0001.txt",
+      "html_path": "artifacts/gingerpeople/pages/pg_0001.html",
+      "discovered_from": "seed",
+      "timestamp": "2026-06-15T12:00:05Z"
+    },
+    {
+      "id": "pg_a1b2",
+      "url": "https://gingerpeople.com/products/gin-gins-original-ginger-chews/",
+      "status_code": 200,
+      "page_type": "product",
+      "title": "GIN GINS Original Ginger Chews",
+      "screenshot_path": "artifacts/gingerpeople/pages/pg_a1b2.png",
+      "text_path": "artifacts/gingerpeople/pages/pg_a1b2.txt",
+      "html_path": "artifacts/gingerpeople/pages/pg_a1b2.html",
+      "discovered_from": "sitemap",
+      "timestamp": "2026-06-15T12:00:12Z"
+    },
+    {
+      "id": "pg_0003",
+      "url": "https://gingerpeople.com/the-ginger-people-products/",
+      "status_code": 200,
+      "page_type": "collection",
+      "title": "Products | The Ginger People",
+      "screenshot_path": "artifacts/gingerpeople/pages/pg_0003.png",
+      "text_path": "artifacts/gingerpeople/pages/pg_0003.txt",
+      "html_path": "artifacts/gingerpeople/pages/pg_0003.html",
+      "discovered_from": "nav",
+      "timestamp": "2026-06-15T12:00:18Z"
+    },
+    {
+      "id": "pg_0004",
+      "url": "https://gingerpeople.com/where-to-buy-the-ginger-people-products/",
+      "status_code": 200,
+      "page_type": "content",
+      "title": "Where To Buy | The Ginger People",
+      "screenshot_path": "artifacts/gingerpeople/pages/pg_0004.png",
+      "text_path": "artifacts/gingerpeople/pages/pg_0004.txt",
+      "html_path": "artifacts/gingerpeople/pages/pg_0004.html",
+      "discovered_from": "nav",
+      "timestamp": "2026-06-15T12:00:24Z"
+    },
+    {
+      "id": "pg_0005",
+      "url": "https://gingerpeople.com/cart",
+      "status_code": 404,
+      "page_type": "cart",
+      "title": "Page not found",
+      "screenshot_path": "artifacts/gingerpeople/pages/pg_0005.png",
+      "text_path": "artifacts/gingerpeople/pages/pg_0005.txt",
+      "html_path": "artifacts/gingerpeople/pages/pg_0005.html",
+      "discovered_from": "seed",
+      "timestamp": "2026-06-15T12:00:30Z"
+    },
+    {
+      "id": "pg_00ff",
+      "url": "https://gingerpeople.com/robots.txt",
+      "status_code": 200,
+      "page_type": "robots",
+      "title": null,
+      "screenshot_path": null,
+      "text_path": "artifacts/gingerpeople/pages/pg_00ff.txt",
+      "html_path": null,
+      "discovered_from": "seed",
+      "timestamp": "2026-06-15T12:00:33Z"
+    },
+    {
+      "id": "pg_0a10",
+      "url": "https://gingerpeople.com/sitemap.xml",
+      "status_code": 200,
+      "page_type": "sitemap",
+      "title": null,
+      "screenshot_path": null,
+      "text_path": "artifacts/gingerpeople/pages/pg_0a10.xml",
+      "html_path": null,
+      "discovered_from": "robots",
+      "timestamp": "2026-06-15T12:00:36Z"
+    }
+  ]
+}

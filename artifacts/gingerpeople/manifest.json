@@ -1,0 +1,56 @@
+{
+  "store": "gingerpeople",
+  "store_url": "https://gingerpeople.com/",
+  "captured_at": "2026-06-16T03:57:52Z",
+  "harness_version": "0.1.0",
+  "pages": [
+    {
+      "id": "pg_1944edde",
+      "url": "https://gingerpeople.com/",
+      "status_code": 403,
+      "page_type": "homepage",
+      "title": "Just a moment...",
+      "screenshot_path": null,
+      "text_path": "artifacts/gingerpeople/pages/pg_1944edde.txt",
+      "html_path": "artifacts/gingerpeople/pages/pg_1944edde.html",
+      "discovered_from": "seed",
+      "timestamp": "2026-06-16T03:57:45Z"
+    },
+    {
+      "id": "pg_af230bb6",
+      "url": "https://gingerpeople.com/cart",
+      "status_code": 403,
+      "page_type": "cart",
+      "title": "Just a moment...",
+      "screenshot_path": null,
+      "text_path": "artifacts/gingerpeople/pages/pg_af230bb6.txt",
+      "html_path": "artifacts/gingerpeople/pages/pg_af230bb6.html",
+      "discovered_from": "seed",
+      "timestamp": "2026-06-16T03:57:48Z"
+    },
+    {
+      "id": "pg_e06b450e",
+      "url": "https://gingerpeople.com/robots.txt",
+      "status_code": 403,
+      "page_type": "robots",
+      "title": "Just a moment...",
+      "screenshot_path": null,
+      "text_path": "artifacts/gingerpeople/pages/pg_e06b450e.txt",
+      "html_path": "artifacts/gingerpeople/pages/pg_e06b450e.html",
+      "discovered_from": "seed",
+      "timestamp": "2026-06-16T03:57:50Z"
+    },
+    {
+      "id": "pg_0fbaca19",
+      "url": "https://gingerpeople.com/sitemap.xml",
+      "status_code": 403,
+      "page_type": "sitemap",
+      "title": "Just a moment...",
+      "screenshot_path": null,
+      "text_path": "artifacts/gingerpeople/pages/pg_0fbaca19.txt",
+      "html_path": "artifacts/gingerpeople/pages/pg_0fbaca19.html",
+      "discovered_from": "seed",
+      "timestamp": "2026-06-16T03:57:52Z"
+    }
+  ]
+}

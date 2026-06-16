@@ -1,0 +1,262 @@
+{
+  "store": "zenrojas",
+  "store_url": "https://zenrojas.com/",
+  "generated_at": "2026-06-16T04:05:00Z",
+  "harness_version": "0.1.0",
+  "executive_summary": "Zen Rojas has a distinctive, trustworthy brand and clear functional positioning, but the storefront under-converts that goodwill at the moment of decision. The homepage carries strong testimonials, a veteran-owned family story, and benefit-led tiles (Sleep, Immune, Energy, Digestion), yet the product pages themselves show no reviews, ratings, or social proof — so the trust built on the homepage evaporates exactly where the buy decision happens. The single clearest leak is this proof gap on the PDP.\n\nThe second theme is weak basket economics. Teas are sold as single one-time SKUs ($8 Black, $13 Bodyguard) against a $50 free-shipping threshold, with a $10 Loose Leaf Sampler Set that exists but is buried as a product variant rather than merchandised as the obvious trial entry point. There is no subscribe-and-save on what are inherently reorderable consumables (\"25 cups per bag,\" \"sip daily for best results\"), and the Ambassador Program is live but disconnected from the post-purchase moment — leaving repeat-purchase and referral revenue on the table.\n\nThird, demand-generation assets are under-exploited: the blog already publishes recipes and press features but does not route that intent into use-case landing pages, and the captured product HTML contains no JSON-LD structured data, which weakens organic discovery. The experiments below span all five pillars and are sequenced so the PDP proof and basket fixes ship first, with acquisition and performance work following.",
+  "experiments": [
+    {
+      "exp_id": "exp-2e7a00000001",
+      "title": "Add reviews and social proof to product pages",
+      "pillar": "Conversion",
+      "affected_surface": "All product detail pages",
+      "url": "https://zenrojas.com/products/bodyguardtea",
+      "evidence": {
+        "manifest_id": "pg_701bac0f",
+        "url": "https://zenrojas.com/products/bodyguardtea",
+        "screenshot_path": null,
+        "note": "Captured Bodyguard PDP shows price, ingredients and Add to Cart but no reviews, ratings, or testimonials, while the homepage (pg_5ecf5e20) carries multiple named customer quotes."
+      },
+      "hypothesis": "PDP conversion improves when the homepage's proof (named testimonials about sleep, sore throat, breastfeeding) is brought onto the product page, because shoppers currently decide on a page with zero on-page social proof.",
+      "primary_change": "Add a reviews/ratings block and 2-3 relevant testimonials to each PDP, seeded from existing homepage quotes and a review-capture email flow.",
+      "primary_kpi": "PDP add-to-cart rate",
+      "decision_rule": "Ship if PDP add-to-cart rate improves without increasing PDP bounce.",
+      "expected_lift": "+8-15%",
+      "confidence": 74
+    },
+    {
+      "exp_id": "exp-2e7a00000002",
+      "title": "Turn homepage benefit tiles into a shop-by-need module",
+      "pillar": "Conversion",
+      "affected_surface": "Homepage first screen",
+      "url": "https://zenrojas.com/",
+      "evidence": {
+        "manifest_id": "pg_5ecf5e20",
+        "url": "https://zenrojas.com/",
+        "screenshot_path": null,
+        "note": null
+      },
+      "hypothesis": "Homepage click-through to PDPs improves by presenting the four benefit states (Sleep & Relaxation, Immune Support, Daily Energy, Digestion) as a persistent shop-by-need module rather than slides a visitor must navigate.",
+      "primary_change": "Replace the hero slideshow's single entrance with four always-visible need cards, each linking to the matching tea, above the fold.",
+      "primary_kpi": "Homepage click-through to PDP",
+      "decision_rule": "Ship if homepage CTR to PDPs improves without hurting downstream PDP conversion.",
+      "expected_lift": "+6-10%",
+      "confidence": 70
+    },
+    {
+      "exp_id": "exp-a0f100000001",
+      "title": "Merchandise the $10 sampler set as the trial entry",
+      "pillar": "AOV",
+      "affected_surface": "PDPs + Best Sellers collection",
+      "url": "https://zenrojas.com/products/looseleafsamplers",
+      "evidence": {
+        "manifest_id": "pg_7e1fe8b2",
+        "url": "https://zenrojas.com/products/looseleafsamplers",
+        "screenshot_path": null,
+        "note": null
+      },
+      "hypothesis": "First-order value rises when the existing $10 Loose Leaf Sampler Set (currently buried as one variant among $2 single samples) is promoted as the headline trial option, because it converts single-flavor hesitation into a higher-value multi-blend purchase.",
+      "primary_change": "Surface the Sampler Set as its own merchandised card on the Best Sellers collection and as a cross-sell on each tea PDP, with the all-blends value made explicit.",
+      "primary_kpi": "Average order value among first-time shoppers",
+      "decision_rule": "Ship if first-order AOV rises by at least $4 without reducing overall add-to-cart rate.",
+      "expected_lift": "+7-12%",
+      "confidence": 72
+    },
+    {
+      "exp_id": "exp-a0f100000002",
+      "title": "Add a free-shipping progress nudge",
+      "pillar": "AOV",
+      "affected_surface": "Cart drawer + site header",
+      "url": "https://zenrojas.com/cart",
+      "evidence": {
+        "manifest_id": "pg_ecb936c2",
+        "url": "https://zenrojas.com/cart",
+        "screenshot_path": null,
+        "note": null
+      },
+      "hypothesis": "Average order value rises by showing how far a cart is from the $50 free-shipping threshold, because individual teas ($8-$13) sit well below it and shoppers have no in-cart signal that adding one more item unlocks free shipping.",
+      "primary_change": "Add a dynamic 'You're $X away from free shipping' progress bar to the cart drawer and header banner with a one-tap add suggestion.",
+      "primary_kpi": "Average order value",
+      "decision_rule": "Ship if AOV rises by at least $5 without increasing cart abandonment.",
+      "expected_lift": "+6-12%",
+      "confidence": 73
+    },
+    {
+      "exp_id": "exp-9e7a00000001",
+      "title": "Offer subscribe-and-save on consumable teas",
+      "pillar": "Retention",
+      "affected_surface": "All tea PDPs",
+      "url": "https://zenrojas.com/products/bodyguardtea",
+      "evidence": {
+        "manifest_id": "pg_701bac0f",
+        "url": "https://zenrojas.com/products/bodyguardtea",
+        "screenshot_path": null,
+        "note": null
+      },
+      "hypothesis": "Repeat purchase rate improves by adding a subscription option to teas that are explicitly daily consumables ('25 cups per bag,' 'sip daily for best results'), because the PDP currently offers only a one-time purchase.",
+      "primary_change": "Add a subscribe-and-save toggle (e.g. monthly, 10% off) alongside the one-time purchase option on every tea PDP.",
+      "primary_kpi": "60-day repeat purchase rate",
+      "decision_rule": "Ship if 60-day repeat purchase rate improves without lowering first-order conversion.",
+      "expected_lift": "+6-12%",
+      "confidence": 70
+    },
+    {
+      "exp_id": "exp-9e7a00000002",
+      "title": "Wire the Ambassador Program into post-purchase",
+      "pillar": "Retention",
+      "affected_surface": "Ambassador Program page + order confirmation",
+      "url": "https://zenrojas.com/pages/ambassadorprogram",
+      "evidence": {
+        "manifest_id": "pg_37016019",
+        "url": "https://zenrojas.com/pages/ambassadorprogram",
+        "screenshot_path": null,
+        "note": null
+      },
+      "hypothesis": "Referral-driven repeat revenue improves by inviting buyers into the existing Ambassador Program at the post-purchase moment, because the program page exists but is disconnected from the highest-intent moment (a happy first purchase).",
+      "primary_change": "Add a post-purchase and confirmation-email invite into the Ambassador Program with a personal share link and first-referral reward.",
+      "primary_kpi": "Referral-attributed repeat orders",
+      "decision_rule": "Ship if referral-attributed repeat orders increase without raising discount cost per order beyond target.",
+      "expected_lift": "+4-9%",
+      "confidence": 64
+    },
+    {
+      "exp_id": "exp-acf100000001",
+      "title": "Add Product structured data to PDPs",
+      "pillar": "Acquisition",
+      "affected_surface": "All product detail pages",
+      "url": "https://zenrojas.com/products/bodyguardtea",
+      "evidence": {
+        "manifest_id": "pg_701bac0f",
+        "url": "https://zenrojas.com/products/bodyguardtea",
+        "screenshot_path": null,
+        "note": "The captured Bodyguard PDP HTML contains no application/ld+json Product markup, so rich results (price, availability, reviews) cannot be generated for organic search."
+      },
+      "hypothesis": "Organic click-through improves by adding Product JSON-LD (price, availability, and aggregate rating once reviews exist), because the captured PDP HTML contains no structured data and currently forfeits rich results.",
+      "primary_change": "Emit valid Product + Offer (+ AggregateRating after reviews launch) JSON-LD on every PDP.",
+      "primary_kpi": "Organic PDP click-through rate",
+      "decision_rule": "Ship if organic PDP click-through rate improves with no Search Console structured-data errors.",
+      "expected_lift": "+5-12%",
+      "confidence": 68
+    },
+    {
+      "exp_id": "exp-acf100000002",
+      "title": "Convert blog recipes into use-case landing pages",
+      "pillar": "Acquisition",
+      "affected_surface": "New page at /pages/tea-rituals",
+      "url": "https://zenrojas.com/pages/tea-rituals",
+      "evidence": {
+        "manifest_id": "pg_507ccf7d",
+        "url": "https://zenrojas.com/blogs/weekly-blog",
+        "screenshot_path": null,
+        "note": "The blog already publishes recipes (Sleepy Mocktail, Green Tea Mocktail, Carajillo) and press features, but they are not routed into product-linked landing pages."
+      },
+      "hypothesis": "Landing-page conversion and organic sessions improve by turning existing recipe and ritual content into use-case landing pages that recommend the matching tea, because that intent currently dead-ends in the blog.",
+      "primary_change": "Build ritual/recipe landing pages (sleep, energy, digestion) that embed the recipe plus a buy module for the recommended blend, linked from nav and blog posts.",
+      "primary_kpi": "Landing-page conversion rate",
+      "decision_rule": "Ship if landing-page conversion beats the blog's product click-through baseline without cannibalizing PDP traffic.",
+      "expected_lift": "+8-16%",
+      "confidence": 66
+    },
+    {
+      "exp_id": "exp-9eff00000001",
+      "title": "Lighten the homepage hero and media",
+      "pillar": "Performance",
+      "affected_surface": "Homepage",
+      "url": "https://zenrojas.com/",
+      "evidence": {
+        "manifest_id": "pg_5ecf5e20",
+        "url": "https://zenrojas.com/",
+        "screenshot_path": null,
+        "note": null
+      },
+      "hypothesis": "Largest Contentful Paint improves by compressing and responsively sizing the homepage hero/slideshow imagery and lazy-loading below-the-fold media, because the captured homepage document is heavy (~150KB HTML plus a slideshow) on the first meaningful paint.",
+      "primary_change": "Serve next-gen, responsively sized hero images with explicit dimensions and defer below-the-fold media on the homepage.",
+      "primary_kpi": "Largest Contentful Paint (mobile)",
+      "decision_rule": "Ship if mobile LCP improves by at least 0.5s with no cumulative layout shift regression.",
+      "expected_lift": "+3-8%",
+      "confidence": 60
+    },
+    {
+      "exp_id": "exp-9eff00000002",
+      "title": "Trim and defer product-page scripts",
+      "pillar": "Performance",
+      "affected_surface": "All product detail pages",
+      "url": "https://zenrojas.com/products/bodyguardtea",
+      "evidence": {
+        "manifest_id": "pg_701bac0f",
+        "url": "https://zenrojas.com/products/bodyguardtea",
+        "screenshot_path": null,
+        "note": null
+      },
+      "hypothesis": "Product-page interactivity speed improves by deferring non-critical and third-party scripts, because the captured PDP document is large (~197KB HTML) which delays time-to-interactive on mobile.",
+      "primary_change": "Audit and defer/async non-critical PDP scripts and split the product gallery bundle so the buy box is interactive sooner.",
+      "primary_kpi": "Time to Interactive (mobile PDP)",
+      "decision_rule": "Ship if mobile PDP time-to-interactive improves by at least 0.4s without breaking the gallery or buy box.",
+      "expected_lift": "+3-7%",
+      "confidence": 58
+    }
+  ],
+  "competitors": [
+    {
+      "name": "Traditional Medicinals",
+      "domain": "traditionalmedicinals.com",
+      "positioning": "Function-first organic wellness teas (sleep, immunity, digestion)",
+      "makes_easier": "Symptom-led shopping with clear benefit labeling per blend",
+      "store_edge": "Veteran-owned family story, small-batch loose leaf, and a personal brand voice",
+      "pattern_to_adapt": "Benefit/symptom navigation that maps a need directly to a product",
+      "source_url": "https://www.traditionalmedicinals.com/",
+      "source_type": "manual",
+      "source_manifest_id": null
+    },
+    {
+      "name": "Pique",
+      "domain": "piquelife.com",
+      "positioning": "Premium functional tea crystals sold largely by subscription",
+      "makes_easier": "Subscribe-and-save and curated bundles as the default purchase",
+      "store_edge": "Lower price point, organic loose leaf ritual, and approachable family branding",
+      "pattern_to_adapt": "Subscription and bundle-first merchandising on consumables",
+      "source_url": "https://www.piquelife.com/",
+      "source_type": "manual",
+      "source_manifest_id": null
+    },
+    {
+      "name": "Tiesta Tea",
+      "domain": "tiestatea.com",
+      "positioning": "Loose-leaf tea organized by functional goal (energizer, relax, slim, etc.)",
+      "makes_easier": "Goal-based browsing and low-commitment sampler packs",
+      "store_edge": "Cleaner organic positioning and stronger founder/community narrative",
+      "pattern_to_adapt": "Goal-based collections and prominent sampler entry points",
+      "source_url": "https://www.tiestatea.com/",
+      "source_type": "manual",
+      "source_manifest_id": null
+    },
+    {
+      "name": "Yogi Tea",
+      "domain": "yogiproducts.com",
+      "positioning": "Purpose-driven herbal blends with benefit-led naming",
+      "makes_easier": "Intent-led discovery via benefit names and education",
+      "store_edge": "Direct-to-consumer ownership of the customer and ambassador-driven referral",
+      "pattern_to_adapt": "Benefit-led naming and educational content tied to each blend",
+      "source_url": "https://www.yogiproducts.com/",
+      "source_type": "manual",
+      "source_manifest_id": null
+    }
+  ],
+  "technical_checks": [
+    { "check": "SSL Certificate", "status": "Pass", "detail": "HTTPS storefront returned 200 across homepage and product pages.", "evidence_manifest_id": "pg_5ecf5e20" },
+    { "check": "HTTPS Redirect", "status": "Pass", "detail": "Inspected URLs resolved over HTTPS.", "evidence_manifest_id": "pg_5ecf5e20" },
+    { "check": "Sitemap", "status": "Pass", "detail": "sitemap.xml returned 200 and was parsed for discovery.", "evidence_manifest_id": "pg_59cba7a8" },
+    { "check": "Robots.txt", "status": "Pass", "detail": "robots.txt returned 200.", "evidence_manifest_id": "pg_f6ddbae7" },
+    { "check": "Critical Pages Loading", "status": "Pass", "detail": "Homepage, PDPs, collections and cart all returned 200.", "evidence_manifest_id": "pg_ecb936c2" },
+    { "check": "Meta Tags & Social Previews", "status": "Pass", "detail": "Open Graph tags present in the captured homepage HTML.", "evidence_manifest_id": "pg_5ecf5e20" },
+    { "check": "Structured Data", "status": "Warn", "detail": "No application/ld+json Product markup found in the captured PDP HTML.", "evidence_manifest_id": "pg_701bac0f" },
+    { "check": "Favicon", "status": "Warn", "detail": "Favicon link not confirmed from the captured HTML.", "evidence_manifest_id": null },
+    { "check": "Mobile-Friendly", "status": "Pass", "detail": "Responsive viewport meta present in the homepage HTML.", "evidence_manifest_id": "pg_5ecf5e20" },
+    { "check": "Page Speed Mobile", "status": "Warn", "detail": "No Lighthouse run; homepage document is ~150KB HTML.", "evidence_manifest_id": "pg_5ecf5e20" },
+    { "check": "Page Speed Desktop", "status": "Warn", "detail": "No Lighthouse run; product document is ~197KB HTML.", "evidence_manifest_id": "pg_701bac0f" },
+    { "check": "Broken Links", "status": "Pass", "detail": "No 4xx/5xx among the 15 crawled surfaces.", "evidence_manifest_id": null },
+    { "check": "Image Optimization", "status": "Warn", "detail": "Large hero/media assets; no byte-level image audit was run.", "evidence_manifest_id": "pg_5ecf5e20" },
+    { "check": "Cookie/Privacy", "status": "Warn", "detail": "Privacy/Terms links present; consent mechanics not inspected and cart requires cookies enabled.", "evidence_manifest_id": "pg_a4742543" },
+    { "check": "Checkout Reachable", "status": "Pass", "detail": "Cart returned 200 with a Checkout control present.", "evidence_manifest_id": "pg_ecb936c2" }
+  ]
+}

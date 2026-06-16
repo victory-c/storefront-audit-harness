@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qosmic-audit-harness/schema/audit.schema.json",
+  "title": "Qosmic audit report",
+  "description": "Machine-readable audit report. Generated and validated before any markdown is rendered.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "store",
+    "store_url",
+    "generated_at",
+    "harness_version",
+    "executive_summary",
+    "experiments",
+    "competitors",
+    "technical_checks"
+  ],
+  "properties": {
+    "store": { "type": "string" },
+    "store_url": { "type": "string", "format": "uri" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "harness_version": { "type": "string" },
+    "executive_summary": { "type": "string", "minLength": 300 },
+    "experiments": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": { "$ref": "#/$defs/experiment" }
+    },
+    "competitors": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 4,
+      "items": { "$ref": "#/$defs/competitor" }
+    },
+    "technical_checks": {
+      "type": "array",
+      "minItems": 13,
+      "maxItems": 18,
+      "items": { "$ref": "#/$defs/technical_check" }
+    }
+  },
+  "$defs": {
+    "pillar": {
+      "enum": ["Conversion", "AOV", "Retention", "Acquisition", "Performance"]
+    },
+    "experiment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "exp_id",
+        "title",
+        "pillar",
+        "affected_surface",
+        "url",
+        "evidence",
+        "hypothesis",
+        "primary_change",
+        "primary_kpi",
+        "decision_rule",
+        "expected_lift",
+        "confidence"
+      ],
+      "properties": {
+        "exp_id": { "type": "string", "pattern": "^exp-[0-9a-f]{12}$" },
+        "title": { "type": "string", "minLength": 5 },
+        "pillar": { "$ref": "#/$defs/pillar" },
+        "affected_surface": { "type": "string", "minLength": 3 },
+        "url": { "type": "string", "format": "uri" },
+        "evidence": { "$ref": "#/$defs/evidence" },
+        "hypothesis": { "type": "string", "minLength": 40 },
+        "primary_change": { "type": "string", "minLength": 20 },
+        "primary_kpi": { "type": "string", "minLength": 3 },
+        "decision_rule": { "type": "string", "minLength": 10 },
+        "expected_lift": { "type": "string", "pattern": "^\\+?\\d{1,3}(–|-)\\d{1,3}%$" },
+        "confidence": { "type": "integer", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifest_id", "url", "screenshot_path", "note"],
+      "properties": {
+        "manifest_id": { "type": "string", "pattern": "^pg_[0-9a-f]{4,}$" },
+        "url": { "type": "string", "format": "uri" },
+        "screenshot_path": { "type": ["string", "null"] },
+        "note": { "type": ["string", "null"] }
+      }
+    },
+    "competitor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "domain",
+        "positioning",
+        "makes_easier",
+        "store_edge",
+        "pattern_to_adapt",
+        "source_url",
+        "source_type",
+        "source_manifest_id"
+      ],
+      "properties": {
+        "name": { "type": "string" },
+        "domain": { "type": "string" },
+        "positioning": { "type": "string" },
+        "makes_easier": { "type": "string" },
+        "store_edge": { "type": "string" },
+        "pattern_to_adapt": { "type": "string" },
+        "source_url": { "type": "string", "format": "uri" },
+        "source_type": {
+          "enum": ["search", "manual", "site_visit", "captured_artifact"]
+        },
+        "source_manifest_id": {
+          "anyOf": [
+            { "type": "string", "pattern": "^pg_[0-9a-f]{4,}$" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "technical_check": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["check", "status", "detail", "evidence_manifest_id"],
+      "properties": {
+        "check": { "type": "string" },
+        "status": { "enum": ["Pass", "Warn", "Fail"] },
+        "detail": { "type": "string" },
+        "evidence_manifest_id": {
+          "anyOf": [
+            { "type": "string", "pattern": "^pg_[0-9a-f]{4,}$" },
+            { "type": "null" }
+          ]
+        }
+      }
+    }
+  }
+}

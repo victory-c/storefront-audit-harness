@@ -1,0 +1,56 @@
+{
+  "store": "zenrojas",
+  "audit_path": "sample_output/zenrojas/audit.json",
+  "manifest_path": "artifacts/zenrojas/manifest.json",
+  "layer1": {
+    "ok": true,
+    "errors": [],
+    "warnings": []
+  },
+  "layer2": {
+    "status": "ok",
+    "produced_by": "agent-as-judge (no ANTHROPIC_API_KEY at generation time); identical schema to eval/judge.py run_judge() output",
+    "model": "claude-opus-4-8 (interactive)",
+    "rubric_version": 1,
+    "dimensions": {
+      "evidence_groundedness": {
+        "score": 4,
+        "justification": "Every experiment cites a real captured page; exp-2e7a00000001 and exp-acf100000001 tie directly to the PDP's missing reviews and absent JSON-LD seen in pg_701bac0f."
+      },
+      "hypothesis_quality": {
+        "score": 4,
+        "justification": "Hypotheses are falsifiable and tied to observed leaks (e.g. homepage testimonials vs. proof-less PDP); two performance items lean on document byte-size, which is weaker."
+      },
+      "experiment_actionability": {
+        "score": 4,
+        "justification": "Control->variant changes are buildable and KPIs/decision-rules cohere; dollar thresholds correctly live in decision_rule (exp-a0f100000001)."
+      },
+      "prioritization": {
+        "score": 4,
+        "justification": "Executive summary leads with the PDP proof gap and basket economics, the highest-impact leaks, and confidence tracks evidence strength."
+      },
+      "pillar_diversity": {
+        "score": 4,
+        "justification": "All five pillars are used substantively; the two Performance experiments are somewhat adjacent (homepage vs PDP weight)."
+      },
+      "specificity_vs_slop": {
+        "score": 5,
+        "justification": "Unmistakably zenrojas: the $10 sampler set, $50 free-ship threshold, Ambassador Program, and the no-JSON-LD finding could not be pasted onto another store."
+      },
+      "competitor_quality": {
+        "score": 3,
+        "justification": "Competitors are real and relevant with adaptable patterns, but sourced manually (no captured competitor artifacts)."
+      },
+      "technical_rigor": {
+        "score": 4,
+        "justification": "Statuses are grounded in real status codes, OG-tag presence, and the absence of JSON-LD; speed checks honestly marked Warn."
+      }
+    },
+    "composite": 81.0,
+    "top_strength": "Evidence-grounded, unmistakably store-specific experiments spanning all five pillars.",
+    "top_weakness": "The two Performance experiments overlap and rely on document weight rather than measured speed.",
+    "fix_suggestion": "Run a real Lighthouse pass to replace byte-size proxies, and differentiate the two Performance experiments.",
+    "review_threshold": 70,
+    "needs_human_review": false
+  }
+}

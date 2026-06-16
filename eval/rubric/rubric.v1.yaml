@@ -1,0 +1,62 @@
+version: 1
+name: qosmic-audit-rubric
+# Reference-free rubric for scoring a Qosmic audit report. Works on stores the
+# eval has never seen — it scores the report against its OWN cited artifacts, not
+# against a golden answer. An optional --anchor (e.g. target_report.md) is used
+# only as a calibration note for the one calibration store, never as ground truth.
+#
+# Each dimension is scored 0-5 (integer) with a one-sentence justification.
+# Composite = sum(score/5 * weight) * 100, reported 0-100.
+scale:
+  0: "Absent or actively misleading."
+  1: "Major gaps; mostly ungrounded or generic."
+  2: "Below bar; several weak or unsupported items."
+  3: "Acceptable; grounded but uneven."
+  4: "Strong; specific and well-supported throughout."
+  5: "Excellent; production-quality, every item earns its place."
+
+dimensions:
+  - id: evidence_groundedness
+    weight: 0.30
+    question: >
+      Does every experiment's hypothesis trace to a SPECIFIC observation in its cited
+      artifact (text excerpt / status / title)? Penalize any claim not supported by the
+      cited page. This is the most important dimension.
+  - id: hypothesis_quality
+    weight: 0.15
+    question: >
+      Are hypotheses specific, falsifiable, and tied to an observed leak (not restatements
+      of the change)? Is the causal story plausible?
+  - id: experiment_actionability
+    weight: 0.15
+    question: >
+      Is the control->variant change concrete enough for a developer to build? Do
+      primary_kpi and decision_rule cohere with the hypothesis and with each other?
+  - id: prioritization
+    weight: 0.10
+    question: >
+      Does the executive summary name the highest-impact leaks, and do confidence/expected_lift
+      and ordering reflect real severity rather than uniform guesses?
+  - id: pillar_diversity
+    weight: 0.10
+    question: >
+      Beyond the hard coverage gate, are all five pillars used substantively (not padded with
+      a token Performance/Retention experiment)?
+  - id: specificity_vs_slop
+    weight: 0.10
+    question: >
+      Is the advice unmistakably about THIS store (its products, copy, surfaces), or could it
+      be pasted onto any Shopify store? Penalize generic slop.
+  - id: competitor_quality
+    weight: 0.05
+    question: >
+      Are the 3-4 competitors real and relevant, with concrete "what they make easier" and an
+      adaptable pattern, each with a usable source?
+  - id: technical_rigor
+    weight: 0.05
+    question: >
+      Are the technical-check statuses justified by evidence (status codes, sitemap/robots
+      presence, structured-data presence), not hand-waved?
+
+# Optional gate: scores below this composite should be flagged for human review in the loop.
+review_threshold: 70

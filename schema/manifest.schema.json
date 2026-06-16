@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qosmic-audit-harness/schema/manifest.schema.json",
+  "title": "Qosmic crawl artifact manifest",
+  "description": "Record of every page captured during the crawl phase. Every claim in an audit report must trace back to a page id in this manifest.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["store", "store_url", "captured_at", "harness_version", "pages"],
+  "properties": {
+    "store": { "type": "string" },
+    "store_url": { "type": "string", "format": "uri" },
+    "captured_at": { "type": "string", "format": "date-time" },
+    "harness_version": { "type": "string" },
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/page" }
+    }
+  },
+  "$defs": {
+    "page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "url",
+        "status_code",
+        "page_type",
+        "title",
+        "screenshot_path",
+        "text_path",
+        "html_path",
+        "discovered_from",
+        "timestamp"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^pg_[0-9a-f]{4,}$" },
+        "url": { "type": "string", "format": "uri" },
+        "status_code": { "type": "integer", "minimum": 100, "maximum": 599 },
+        "page_type": {
+          "enum": ["homepage", "product", "collection", "cart", "content", "policy", "blog", "sitemap", "robots", "other"]
+        },
+        "title": { "type": ["string", "null"] },
+        "screenshot_path": { "type": ["string", "null"] },
+        "text_path": { "type": ["string", "null"] },
+        "html_path": { "type": ["string", "null"] },
+        "discovered_from": {
+          "enum": ["sitemap", "nav", "products.json", "seed", "robots"]
+        },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}
