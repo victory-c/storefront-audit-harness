@@ -1,6 +1,6 @@
 # Ginger People audit — the store is back; the buy path is now the constraint
 
-> Calibration anchor. This is what a Qosmic audit for `gingerpeople.com` looks
+> Calibration anchor. This is what a Storefront Audit audit for `gingerpeople.com` looks
 > like at production quality. Use it to understand the bar, not to copy.
 
 ## Executive summary

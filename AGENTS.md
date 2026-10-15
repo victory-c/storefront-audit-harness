@@ -1,6 +1,6 @@
-# qosmic-audit-harness — agent entry point
+# storefront-audit-harness — agent entry point
 
-This repo turns a coding agent into a **Qosmic Shopify CRO audit agent**: point it at a
+This repo turns a coding agent into a **Storefront Audit Shopify CRO audit agent**: point it at a
 storefront URL, get one structured audit report. This file is the minimal contract an
 agent needs to operate the harness.
 
@@ -65,7 +65,7 @@ python3 harness/validate.py --manifest artifacts/<store>/manifest.json
 
 Notes: discovery is deterministic (seeds → robots sitemaps → sitemap(s) → `products.json`
 → one-hop nav → quota'd selection). Screenshots are best-effort and skipped unless
-Playwright is present and `QOSMIC_SCREENSHOTS=1`. Sites behind bot protection may return
+Playwright is present and `STOREFRONT_AUDIT_SCREENSHOTS=1`. Sites behind bot protection may return
 non-200 (e.g. 403/599); those are recorded honestly and the manifest still validates.
 
 ## Step 1 verification

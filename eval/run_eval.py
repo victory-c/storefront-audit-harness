@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""qosmic-audit-harness — eval runner.
+"""storefront-audit-harness — eval runner.
 
 Step 1 wires up the eval CLI and makes **Layer 1 the same validators as the
 harness gate** (single source of truth — the harness and the eval can never
@@ -31,7 +31,7 @@ def _load_json(path: str) -> dict:
 
 
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(description="Score a Qosmic audit report.")
+    parser = argparse.ArgumentParser(description="Score a Storefront Audit audit report.")
     parser.add_argument("--audit", required=True)
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--rubric", default="eval/rubric/rubric.v1.yaml",

@@ -7,7 +7,7 @@ matching ``schema/manifest.schema.json``.
 
 Network access is isolated in ``fetch_page`` / ``_capture_screenshot`` so tests
 can monkeypatch them. Screenshots are best-effort: skipped unless Playwright is
-present *and* ``QOSMIC_SCREENSHOTS=1`` — never a hard dependency, never fatal.
+present *and* ``STOREFRONT_AUDIT_SCREENSHOTS=1`` — never a hard dependency, never fatal.
 """
 from __future__ import annotations
 
@@ -69,6 +69,19 @@ def html_to_text(html: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def access_status(fetch: PageFetch) -> str:
+    """Classify what the crawler can defensibly claim about a page."""
+    if fetch.status_code in (401, 403, 429, 503):
+        return "blocked"
+    if fetch.status_code == 599 or fetch.error:
+        return "error"
+    if fetch.status_code >= 400:
+        return "unavailable"
+    if 200 <= fetch.status_code < 300 and fetch.text:
+        return "accessible"
+    return "empty"
+
+
 def fetch_page(url: str, timeout: int = DEFAULT_FETCH_TIMEOUT) -> PageFetch:
     status, body, ctype, error = http_get(url, timeout)
     if status is None:
@@ -86,9 +99,9 @@ def fetch_page(url: str, timeout: int = DEFAULT_FETCH_TIMEOUT) -> PageFetch:
 
 
 def _capture_screenshot(url: str, abs_path: str) -> bool:
-    """Best-effort screenshot. Off unless QOSMIC_SCREENSHOTS is truthy and
+    """Best-effort screenshot. Off unless STOREFRONT_AUDIT_SCREENSHOTS is truthy and
     Playwright is importable + working. Never raises."""
-    if os.environ.get("QOSMIC_SCREENSHOTS", "").lower() not in ("1", "true", "yes"):
+    if os.environ.get("STOREFRONT_AUDIT_SCREENSHOTS", "").lower() not in ("1", "true", "yes"):
         return False
     try:
         from playwright.sync_api import sync_playwright
@@ -166,18 +179,32 @@ def crawl_store(store_url: str, store: str, out_dir: str = "artifacts",
             "html_path": html_rel,
             "discovered_from": d.discovered_from,
             "timestamp": timestamp,
+            "access_status": access_status(fetched),
         })
 
     parsed = normalize_url(store_url)
     from urllib.parse import urlparse
     home = f"https://{urlparse(parsed).netloc}/"
 
+    status_counts = {}
+    for page in pages:
+        status = page["access_status"]
+        status_counts[status] = status_counts.get(status, 0) + 1
+    blocked = status_counts.get("blocked", 0)
+    inaccessible = blocked + status_counts.get("error", 0) + status_counts.get("unavailable", 0)
     manifest = {
         "store": store,
         "store_url": home,
         "captured_at": _now_iso(),
         "harness_version": HARNESS_VERSION,
         "pages": pages,
+        "scope": {
+            "pages_requested": len(pages),
+            "pages_accessible": status_counts.get("accessible", 0),
+            "pages_inaccessible": inaccessible,
+            "coverage": "blocked" if blocked == len(pages) else ("partial" if inaccessible else "complete"),
+            "disclaimer": "Claims are limited to captured artifacts; blocked or unavailable pages were not inspected.",
+        },
     }
 
     manifest_path = os.path.join(store_dir, "manifest.json")

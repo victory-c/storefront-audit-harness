@@ -1,4 +1,4 @@
-"""Tests for the qosmic-audit-harness contract layer."""
+"""Tests for the storefront-audit-harness contract layer."""
 import json
 import os
 import subprocess

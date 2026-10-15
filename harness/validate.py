@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contract validation for qosmic-audit-harness.
+"""Contract validation for storefront-audit-harness.
 
 Two layers:
 
@@ -392,7 +392,7 @@ def _load_json(path: str) -> dict:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
-        description="Validate qosmic-audit-harness manifest and/or audit contracts.")
+        description="Validate storefront-audit-harness manifest and/or audit contracts.")
     parser.add_argument("--audit", help="Path to an audit.json")
     parser.add_argument("--manifest", help="Path to a manifest.json")
     args = parser.parse_args(argv)

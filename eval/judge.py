@@ -23,7 +23,7 @@ if _REPO_ROOT not in sys.path:
 
 from harness.reason_write import build_evidence_pack  # noqa: E402
 
-DEFAULT_JUDGE_MODEL = os.environ.get("QOSMIC_JUDGE_MODEL", "claude-sonnet-4-6")
+DEFAULT_JUDGE_MODEL = os.environ.get("STOREFRONT_AUDIT_JUDGE_MODEL", "claude-sonnet-4-6")
 DEFAULT_RUBRIC = os.path.join(_REPO_ROOT, "eval", "rubric", "rubric.v1.yaml")
 
 
@@ -67,7 +67,7 @@ def run_judge(audit: dict, manifest: dict, rubric_path: str = DEFAULT_RUBRIC,
         anchor_note = ("\nCALIBRATION NOTE (style reference only, NOT ground truth; do not "
                        "reward copying it):\n" + anchor_text[:6000])
 
-    user = f"""Score this Qosmic audit report against the artifacts it cites. Be a harsh,
+    user = f"""Score this Storefront Audit Harness report against the artifacts it cites. Be a harsh,
 fair judge. For each dimension give an integer 0-5 and a one-sentence justification that
 cites a specific experiment id or page id.
 

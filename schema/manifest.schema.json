@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://qosmic-audit-harness/schema/manifest.schema.json",
-  "title": "Qosmic crawl artifact manifest",
+  "$id": "https://storefront-audit-harness/schema/manifest.schema.json",
+  "title": "Storefront Audit Harness crawl artifact manifest",
   "description": "Record of every page captured during the crawl phase. Every claim in an audit report must trace back to a page id in this manifest.",
   "type": "object",
   "additionalProperties": false,
@@ -15,6 +15,18 @@
       "type": "array",
       "minItems": 1,
       "items": { "$ref": "#/$defs/page" }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pages_requested", "pages_accessible", "pages_inaccessible", "coverage", "disclaimer"],
+      "properties": {
+        "pages_requested": { "type": "integer", "minimum": 1 },
+        "pages_accessible": { "type": "integer", "minimum": 0 },
+        "pages_inaccessible": { "type": "integer", "minimum": 0 },
+        "coverage": { "enum": ["complete", "partial", "blocked"] },
+        "disclaimer": { "type": "string", "minLength": 1 }
+      }
     }
   },
   "$defs": {
@@ -47,7 +59,10 @@
         "discovered_from": {
           "enum": ["sitemap", "nav", "products.json", "seed", "robots"]
         },
-        "timestamp": { "type": "string", "format": "date-time" }
+        "timestamp": { "type": "string", "format": "date-time" },
+        "access_status": {
+          "enum": ["accessible", "blocked", "unavailable", "error", "empty"]
+        }
       }
     }
   }

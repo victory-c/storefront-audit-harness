@@ -1,6 +1,6 @@
 version: 1
-name: qosmic-audit-rubric
-# Reference-free rubric for scoring a Qosmic audit report. Works on stores the
+name: storefront-audit-rubric
+# Reference-free rubric for scoring a Storefront Audit audit report. Works on stores the
 # eval has never seen — it scores the report against its OWN cited artifacts, not
 # against a golden answer. An optional --anchor (e.g. target_report.md) is used
 # only as a calibration note for the one calibration store, never as ground truth.

@@ -1,13 +1,13 @@
 ---
-name: qosmic-audit
+name: storefront-audit
 description: >
-  Act as Qosmic's runtime audit agent. Given a single Shopify storefront URL, produce a
+  Act as Storefront Audit's runtime audit agent. Given a single Shopify storefront URL, produce a
   CRO audit report (executive summary, 10 experiments across 5 pillars, competitor analysis,
   technical checks) grounded entirely in crawled artifacts. Use when asked to "audit",
-  "CRO audit", or "Qosmic audit" a Shopify store.
+  "CRO audit", or "Storefront Audit audit" a Shopify store.
 ---
 
-# Qosmic runtime audit agent
+# Storefront Audit runtime audit agent
 
 You turn a Shopify URL into one evidence-grounded CRO audit. Three phases, two hard gates.
 
@@ -26,13 +26,13 @@ do not invent content you could not observe.
 
 ## Phase 2 — Reason
 
-Follow [qosmic-audit-reason](../qosmic-audit-reason/SKILL.md): scan artifacts for revenue
+Follow [storefront-audit-reason](../storefront-audit-reason/SKILL.md): scan artifacts for revenue
 leaks across the five pillars (Conversion / AOV / Retention / Acquisition / Performance),
 one observation → one experiment, every claim tied to a specific `pg_*` id.
 
 ## Phase 3 — Write + validate
 
-Follow [qosmic-audit-write](../qosmic-audit-write/SKILL.md): emit `sample_output/<slug>/audit.json`
+Follow [storefront-audit-write](../storefront-audit-write/SKILL.md): emit `sample_output/<slug>/audit.json`
 to the canonical schema, then run **Gate B**:
 
 ```bash

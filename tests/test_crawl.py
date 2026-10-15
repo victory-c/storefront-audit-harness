@@ -9,7 +9,7 @@ if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
 from harness import crawl  # noqa: E402
-from harness.crawl import PageFetch, crawl_store, page_id  # noqa: E402
+from harness.crawl import PageFetch, access_status, crawl_store, page_id  # noqa: E402
 from harness.discover_urls import DiscoveredURL, TYPE_PRIORITY  # noqa: E402
 from harness.validate import validate_manifest  # noqa: E402
 
@@ -66,11 +66,30 @@ def test_failed_fetch_records_599_and_text_artifact(tmp_path, monkeypatch):
     manifest = crawl_store("https://shop.example.com", "example", out_dir=str(tmp_path))
     cart = next(p for p in manifest["pages"] if p["url"].endswith("/cart"))
     assert cart["status_code"] == 599
+    assert cart["access_status"] == "error"
     assert cart["html_path"] is None
     assert cart["screenshot_path"] is None
     txt = tmp_path / "example" / "pages" / f"{cart['id']}.txt"
     assert txt.exists()
     assert "FETCH ERROR" in txt.read_text()
+
+
+def test_scope_summary_distinguishes_accessible_and_inaccessible_pages(tmp_path, monkeypatch):
+    _patch(monkeypatch)
+    manifest = crawl_store("https://shop.example.com", "example", out_dir=str(tmp_path))
+    assert manifest["scope"] == {
+        "pages_requested": 3,
+        "pages_accessible": 2,
+        "pages_inaccessible": 1,
+        "coverage": "partial",
+        "disclaimer": "Claims are limited to captured artifacts; blocked or unavailable pages were not inspected.",
+    }
+    assert validate_manifest(manifest).ok
+
+
+def test_bot_protection_status_is_blocked_not_unavailable():
+    response = PageFetch(403, "text/html", b"Just a moment", "Just a moment", None, True, None)
+    assert access_status(response) == "blocked"
 
 
 def test_html_page_gets_html_artifact_and_title(tmp_path, monkeypatch):

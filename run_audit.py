@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""qosmic-audit-harness — single audit command.
+"""storefront-audit-harness — single audit command.
 
 Pipeline and gates:
 
@@ -64,7 +64,7 @@ def write_outputs(audit: dict, out_root: str, store: str) -> tuple:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
-        description="Run a Qosmic Shopify CRO audit (Step 2: crawl -> manifest + Gate A).")
+        description="Run a Storefront Audit Shopify CRO audit (Step 2: crawl -> manifest + Gate A).")
     parser.add_argument("--url", required=True, help="Shopify storefront URL")
     parser.add_argument("--store", help="Short store slug (e.g. gingerpeople)")
     parser.add_argument("--out", default="sample_output/", help="Output directory")

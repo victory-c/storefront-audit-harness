@@ -17,11 +17,14 @@ fields, all-Conversion experiments, fabricated evidence paths, unresolved screen
 ## `manifest.schema.json` — crawl artifacts
 
 One record per captured page. Top-level: `store`, `store_url` (uri), `captured_at`
-(date-time), `harness_version`, `pages` (≥1). Each page requires `id` (`^pg_[0-9a-f]{4,}$`),
+(date-time), `harness_version`, `pages` (≥1). New manifests also include `scope`, a
+machine-readable coverage summary. Each page requires `id` (`^pg_[0-9a-f]{4,}$`),
 `url` (uri), `status_code` (100–599), `page_type` (enum), `title`, `screenshot_path`,
 `text_path`, `html_path` (the four may be `null` but the keys are required),
 `discovered_from` (enum), `timestamp` (date-time). The manifest is the ground truth every
-audit claim must cite.
+audit claim must cite. `access_status` records whether a page was accessible, blocked by
+the site or bot protection, unavailable, errored, or empty; inaccessible pages are not
+evidence for content claims.
 
 ## `audit.schema.json` — the report
 
