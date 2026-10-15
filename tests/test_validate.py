@@ -5,11 +5,13 @@ import os
 import subprocess
 import sys
 
+
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
 from harness.validate import validate_audit, validate_manifest  # noqa: E402
+from run_audit import write_outputs  # noqa: E402
 
 FIX = os.path.join(_REPO_ROOT, "tests", "fixtures")
 
@@ -44,6 +46,18 @@ def test_blocked_experiment_content_evidence_fails():
 
     assert not report.ok
     assert "evidence_inaccessible" in _codes(report.errors)
+
+
+def test_unavailable_and_empty_experiment_content_evidence_fail():
+    for access_status in ("unavailable", "empty"):
+        audit = _load("audit.valid.json")
+        manifest = _load("manifest.valid.json")
+        manifest["pages"][1]["access_status"] = access_status
+
+        report = validate_audit(audit, manifest)
+
+        assert not report.ok
+        assert "evidence_inaccessible" in _codes(report.errors)
 
 
 def test_accessible_experiment_evidence_passes_with_access_status():
@@ -82,21 +96,22 @@ def test_blocked_technical_content_evidence_fails_but_barrier_check_passes():
 
 
 def test_access_barrier_experiment_claim_is_allowed():
-    audit = _load("audit.valid.json")
-    manifest = _load("manifest.valid.json")
-    manifest["pages"][4]["access_status"] = "blocked"
-    for experiment in audit["experiments"]:
-        if experiment["evidence"]["manifest_id"] == "pg_0005":
-            experiment["evidence"]["note"] = (
-                "The /cart request returned HTTP 403 bot protection challenge; no page content was accessible."
-            )
-    for check in audit["technical_checks"]:
-        if check.get("evidence_manifest_id") == "pg_0005":
-            check["detail"] = "The /cart request returned HTTP 403 bot protection challenge."
+    for access_status in ("blocked", "unavailable", "error", "empty"):
+        audit = _load("audit.valid.json")
+        manifest = _load("manifest.valid.json")
+        manifest["pages"][4]["access_status"] = access_status
+        for experiment in audit["experiments"]:
+            if experiment["evidence"]["manifest_id"] == "pg_0005":
+                experiment["evidence"]["note"] = (
+                    "The /cart request returned HTTP 403 bot protection challenge; no page content was accessible."
+                )
+        for check in audit["technical_checks"]:
+            if check.get("evidence_manifest_id") == "pg_0005":
+                check["detail"] = "The /cart request returned HTTP 403 bot protection challenge."
 
-    report = validate_audit(audit, manifest)
+        report = validate_audit(audit, manifest)
 
-    assert "evidence_inaccessible" not in _codes(report.errors)
+        assert "evidence_inaccessible" not in _codes(report.errors)
 
 
 def test_missing_access_status_remains_compatible():
@@ -167,3 +182,15 @@ def test_run_eval_writes_scorecard(tmp_path):
     # Layer 2 runs only with an API key; without one it reports skipped (or ok if a key
     # is present in the environment).
     assert data["layer2"]["status"] in ("skipped", "ok")
+
+
+def test_write_outputs_rejects_unsafe_store_slugs_before_writing(tmp_path):
+    audit = _load("audit.valid.json")
+    for slug in ("../escape", "/tmp/escape"):
+        try:
+            write_outputs(audit, str(tmp_path), slug)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"unsafe slug accepted: {slug}")
+    assert list(tmp_path.iterdir()) == []

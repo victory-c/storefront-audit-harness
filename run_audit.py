@@ -27,7 +27,7 @@ _REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
 
-from harness.crawl import crawl_store  # noqa: E402
+from harness.crawl import crawl_store, validate_store_slug  # noqa: E402
 from harness.discover_urls import site_host  # noqa: E402
 from harness.validate import validate_audit, validate_manifest  # noqa: E402
 
@@ -50,6 +50,7 @@ def reason_and_write(url: str, store, manifest: dict) -> dict:
 
 def write_outputs(audit: dict, out_root: str, store: str) -> tuple:
     from harness.render import render_markdown
+    validate_store_slug(store)
     out_dir = os.path.join(out_root, store)
     os.makedirs(out_dir, exist_ok=True)
     json_path = os.path.join(out_dir, "audit.json")
@@ -89,6 +90,7 @@ def main(argv=None) -> int:
         return 1
     else:
         store = args.store or default_store_slug(args.url)
+        validate_store_slug(store)
         print(f"== Crawling {args.url} (store='{store}', max_pages={args.max_pages}) ==")
         manifest = crawl_store(args.url, store, out_dir=ARTIFACTS_DIR,
                                max_pages=args.max_pages)
@@ -107,6 +109,7 @@ def main(argv=None) -> int:
         return 0
 
     store = args.store or manifest.get("store") or default_store_slug(args.url)
+    validate_store_slug(store)
 
     # --- Reason/write phase / audit ---
     if args.audit:

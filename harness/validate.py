@@ -217,7 +217,7 @@ def _v_inaccessible_evidence(audit, manifest):
     issues = []
     for e in audit["experiments"]:
         page = pages.get(e["evidence"]["manifest_id"])
-        if page is None or page.get("access_status") not in {"blocked", "error"}:
+        if page is None or page.get("access_status") not in {"blocked", "unavailable", "error", "empty"}:
             continue
         ev = e["evidence"]
         # Keep the exception explicit and evidence-local: a barrier keyword in a
@@ -240,7 +240,7 @@ def _v_inaccessible_technical_evidence(audit, manifest):
     for c in audit["technical_checks"]:
         mid = c.get("evidence_manifest_id")
         page = pages.get(mid) if mid else None
-        if page is None or page.get("access_status") not in {"blocked", "error"}:
+        if page is None or page.get("access_status") not in {"blocked", "unavailable", "error", "empty"}:
             continue
         if not _is_access_barrier_claim(c.get("detail", "")):
             issues.append(Issue(

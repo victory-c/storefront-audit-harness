@@ -87,6 +87,34 @@ def test_scope_summary_distinguishes_accessible_and_inaccessible_pages(tmp_path,
     assert validate_manifest(manifest).ok
 
 
+def test_scope_summary_counts_empty_pages_as_inaccessible(tmp_path, monkeypatch):
+    _patch(monkeypatch)
+
+    def fetch_with_empty_product(url, timeout=20):
+        if url.endswith("/products/widget"):
+            return PageFetch(200, "text/html", b"", "", None, True, None)
+        return _fake_fetch(url, timeout)
+
+    monkeypatch.setattr(crawl, "fetch_page", fetch_with_empty_product)
+    manifest = crawl_store("https://shop.example.com", "example", out_dir=str(tmp_path))
+
+    assert manifest["scope"]["pages_accessible"] == 1
+    assert manifest["scope"]["pages_inaccessible"] == 2
+    assert manifest["scope"]["coverage"] == "partial"
+
+
+def test_crawl_rejects_unsafe_store_slugs_before_writing(tmp_path, monkeypatch):
+    _patch(monkeypatch)
+    for slug in ("../escape", "/tmp/escape"):
+        try:
+            crawl_store("https://shop.example.com", slug, out_dir=str(tmp_path))
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"unsafe slug accepted: {slug}")
+    assert list(tmp_path.iterdir()) == []
+
+
 def test_bot_protection_status_is_blocked_not_unavailable():
     response = PageFetch(403, "text/html", b"Just a moment", "Just a moment", None, True, None)
     assert access_status(response) == "blocked"

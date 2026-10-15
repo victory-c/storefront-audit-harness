@@ -27,7 +27,7 @@ from harness.discover_urls import (
 )
 from harness.version import HARNESS_VERSION
 
-__all__ = ["PageFetch", "fetch_page", "crawl_store", "page_id"]
+__all__ = ["PageFetch", "fetch_page", "crawl_store", "page_id", "validate_store_slug"]
 
 DEFAULT_FETCH_TIMEOUT = 20
 
@@ -59,6 +59,14 @@ def _now_iso() -> str:
 
 def _rel(out_dir: str, store: str, filename: str) -> str:
     return "/".join([out_dir.rstrip("/"), store, "pages", filename])
+
+
+def validate_store_slug(store: str) -> str:
+    """Reject store names that could escape the configured output directory."""
+    if (not isinstance(store, str) or not store or store in {".", ".."}
+            or "/" in store or "\\" in store or "\x00" in store):
+        raise ValueError(f"store slug must be a safe basename: {store!r}")
+    return store
 
 
 def html_to_text(html: str) -> str:
@@ -134,6 +142,7 @@ def _write_bytes(path: str, content: bytes) -> None:
 # --------------------------------------------------------------------------- #
 def crawl_store(store_url: str, store: str, out_dir: str = "artifacts",
                 max_pages: int = 15) -> dict:
+    validate_store_slug(store)
     discovered = discover_urls(store_url, max_pages=max_pages)
 
     store_dir = os.path.join(out_dir, store)
@@ -191,7 +200,9 @@ def crawl_store(store_url: str, store: str, out_dir: str = "artifacts",
         status = page["access_status"]
         status_counts[status] = status_counts.get(status, 0) + 1
     blocked = status_counts.get("blocked", 0)
-    inaccessible = blocked + status_counts.get("error", 0) + status_counts.get("unavailable", 0)
+    inaccessible = (blocked + status_counts.get("error", 0)
+                    + status_counts.get("unavailable", 0)
+                    + status_counts.get("empty", 0))
     manifest = {
         "store": store,
         "store_url": home,
