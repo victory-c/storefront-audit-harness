@@ -1,4 +1,5 @@
 """Tests for the storefront-audit-harness contract layer."""
+import copy
 import json
 import os
 import subprocess
@@ -32,6 +33,76 @@ def test_valid_audit_passes_clean():
     assert report.ok, report.summary()
     # The valid fixture is designed to be clean — no warnings either.
     assert report.warnings == [], report.summary()
+
+
+def test_blocked_experiment_content_evidence_fails():
+    audit = _load("audit.valid.json")
+    manifest = _load("manifest.valid.json")
+    manifest["pages"][1]["access_status"] = "blocked"
+
+    report = validate_audit(audit, manifest)
+
+    assert not report.ok
+    assert "evidence_inaccessible" in _codes(report.errors)
+
+
+def test_accessible_experiment_evidence_passes_with_access_status():
+    audit = _load("audit.valid.json")
+    manifest = _load("manifest.valid.json")
+    for page in manifest["pages"]:
+        page["access_status"] = "accessible"
+
+    report = validate_audit(audit, manifest)
+
+    assert report.ok, report.summary()
+
+
+def test_blocked_technical_content_evidence_fails_but_barrier_check_passes():
+    audit = _load("audit.valid.json")
+    manifest = _load("manifest.valid.json")
+    manifest["pages"][0]["access_status"] = "blocked"
+    audit["technical_checks"][0]["detail"] = "The page title was observed as missing."
+
+    report = validate_audit(audit, manifest)
+
+    assert not report.ok
+    assert "technical_check_evidence_inaccessible" in _codes(report.errors)
+
+    barrier_audit = copy.deepcopy(audit)
+    for check in barrier_audit["technical_checks"]:
+        if check.get("evidence_manifest_id") == "pg_0001":
+            check["detail"] = (
+                "The URL returned HTTP 403 bot protection challenge; page content was not accessible."
+            )
+    barrier_audit["technical_checks"][0]["detail"] = (
+        "Homepage returned HTTP 403 bot protection challenge; page content was not accessible."
+    )
+    barrier_report = validate_audit(barrier_audit, manifest)
+    assert "technical_check_evidence_inaccessible" not in _codes(barrier_report.errors)
+
+
+def test_access_barrier_experiment_claim_is_allowed():
+    audit = _load("audit.valid.json")
+    manifest = _load("manifest.valid.json")
+    manifest["pages"][4]["access_status"] = "blocked"
+    for experiment in audit["experiments"]:
+        if experiment["evidence"]["manifest_id"] == "pg_0005":
+            experiment["evidence"]["note"] = (
+                "The /cart request returned HTTP 403 bot protection challenge; no page content was accessible."
+            )
+    for check in audit["technical_checks"]:
+        if check.get("evidence_manifest_id") == "pg_0005":
+            check["detail"] = "The /cart request returned HTTP 403 bot protection challenge."
+
+    report = validate_audit(audit, manifest)
+
+    assert "evidence_inaccessible" not in _codes(report.errors)
+
+
+def test_missing_access_status_remains_compatible():
+    report = validate_audit(_load("audit.valid.json"), _load("manifest.valid.json"))
+
+    assert report.ok, report.summary()
 
 
 def test_invalid_pillars_fails_with_code():

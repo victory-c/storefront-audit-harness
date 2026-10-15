@@ -69,8 +69,11 @@ URL → bounded discovery/crawl → manifest + scope summary → Gate A
 
 The contracts are in `schema/`. `harness/validate.py` enforces both JSON-Schema shape and
 cross-record rules such as unique experiments, five-pillar coverage, and evidence citations
-resolving to captured page IDs. The evaluator in `eval/` adds a reference-free rubric and an
-optional LLM judge; it does not turn inaccessible pages into evidence.
+resolving to captured page IDs. When a manifest includes `access_status`, Gate B rejects
+content-level experiment and technical-check evidence cited from `blocked` or `error` pages;
+explicit access-barrier findings remain valid. Manifests from older runs without that field
+remain compatible. The evaluator in `eval/` adds a reference-free rubric and an optional LLM
+judge; it does not turn inaccessible pages into evidence.
 
 ## Layout
 

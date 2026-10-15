@@ -60,10 +60,12 @@ skipped (with a warning) when no manifest is supplied. They live in a registry
 | `pillar_coverage` | error | no | the 10 experiments span all 5 pillars |
 | `exp_id_duplicate` | error | no | all `exp_id` values are unique |
 | `evidence_unresolved` | error | yes | every `evidence.manifest_id` exists in the manifest |
+| `evidence_inaccessible` | error | yes | blocked/error pages cannot support content-level experiment claims; explicit access-barrier claims are allowed |
 | `evidence_path_mismatch` | warn | yes | non-null `evidence.screenshot_path` matches the manifest page |
 | `new_page_evidence_note` | warn | yes | new-page experiments (url not in manifest) carry a non-empty `evidence.note` |
 | `competitor_source_unresolved` | error | yes | `captured_artifact` competitors have a resolving `source_manifest_id` |
 | `technical_check_evidence_unresolved` | error | yes | non-null `technical_checks[].evidence_manifest_id` resolves to a manifest page |
+| `technical_check_evidence_inaccessible` | error | yes | blocked/error pages cannot support page-content technical claims; access-barrier details are allowed |
 | `canonical_tech_checks_missing` | error | no | all 15 canonical check names are present |
 | `pillar_balance` | warn | no | no pillar has a lone experiment while another carries ≥3 |
 | `host_mismatch` | warn | no | experiment URLs share the store host; competitor domain ≠ store domain |
