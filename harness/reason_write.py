@@ -9,8 +9,8 @@ the stopping condition.
 
 Requires ``anthropic`` and ``ANTHROPIC_API_KEY``. Without them it raises a clear
 error pointing at the skill-driven path (an agent can produce audit.json by hand
-following skills/qosmic-audit-write/SKILL.md). Model id defaults to Opus 4.8 and
-is overridable via ``QOSMIC_AUDIT_MODEL``.
+following skills/storefront-audit-write/SKILL.md). Model id defaults to Opus 4.8 and
+is overridable via ``STOREFRONT_AUDIT_MODEL``.
 """
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ from harness.validate import (  # noqa: E402
 )
 from harness.version import HARNESS_VERSION  # noqa: E402
 
-DEFAULT_MODEL = os.environ.get("QOSMIC_AUDIT_MODEL", "claude-opus-4-8")
+DEFAULT_MODEL = os.environ.get("STOREFRONT_AUDIT_MODEL", "claude-opus-4-8")
 MAX_CHARS_PER_PAGE = 4000
 MAX_ATTEMPTS = 3
 
@@ -51,6 +51,7 @@ def build_evidence_pack(manifest: dict, max_chars: int = MAX_CHARS_PER_PAGE) -> 
             f"--- PAGE {p['id']} ---\n"
             f"url: {p['url']}\npage_type: {p['page_type']}\n"
             f"status_code: {p['status_code']}\ntitle: {p.get('title')}\n"
+            f"access_status: {p.get('access_status', 'unknown')}\n"
             f"screenshot_path: {p.get('screenshot_path')}\n"
             f"text_excerpt:\n{excerpt}\n")
     return "\n".join(blocks)
@@ -58,7 +59,7 @@ def build_evidence_pack(manifest: dict, max_chars: int = MAX_CHARS_PER_PAGE) -> 
 
 def _system_prompt() -> str:
     return (
-        "You are Qosmic's runtime audit agent. You produce conversion-rate-optimization "
+        "You are Storefront Audit's runtime audit agent. You produce conversion-rate-optimization "
         "(CRO) audits for Shopify storefronts. You only make claims that are grounded in "
         "the provided crawl artifacts. You never invent evidence. You output strictly "
         "valid JSON for the requested schema and nothing else.")
@@ -83,6 +84,9 @@ Hard requirements (the report is rejected otherwise):
   {CANONICAL_TECH_CHECKS}. Each status is Pass|Warn|Fail with a one-line evidence-based detail.
 - store_url="{store_url}", store="{store}", harness_version="{HARNESS_VERSION}",
   generated_at is an ISO-8601 UTC timestamp.
+- Treat pages marked blocked, unavailable, error, empty, or unknown as access limitations, not
+  content evidence. Do not make claims about content that was not captured; explain the scope
+  limitation in the executive summary and relevant technical checks.
 
 Cite everything. Diversify pillars. Be specific to THIS store — no generic advice.
 Output ONLY the JSON object."""
@@ -106,12 +110,12 @@ def generate_audit(manifest: dict, store_url: str, store: str | None = None,
         raise RuntimeError(
             "reason/write needs the 'anthropic' package (pip install anthropic) and "
             "ANTHROPIC_API_KEY. Alternatively, an agent can produce audit.json by hand "
-            "following skills/qosmic-audit-write/SKILL.md, then validate with "
+            "following skills/storefront-audit-write/SKILL.md, then validate with "
             "harness/validate.py.") from e
     if not os.environ.get("ANTHROPIC_API_KEY"):
         raise RuntimeError(
             "ANTHROPIC_API_KEY is not set. Set it, or follow the skill-driven path "
-            "(skills/qosmic-audit-write/SKILL.md) to write audit.json by hand.")
+            "(skills/storefront-audit-write/SKILL.md) to write audit.json by hand.")
 
     store = store or manifest.get("store", "store")
     manifest_ids = [p["id"] for p in manifest["pages"]]

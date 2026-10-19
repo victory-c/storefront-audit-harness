@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://qosmic-audit-harness/schema/audit.schema.json",
-  "title": "Qosmic audit report",
+  "$id": "https://storefront-audit-harness/schema/audit.schema.json",
+  "title": "Storefront Audit audit report",
   "description": "Machine-readable audit report. Generated and validated before any markdown is rendered.",
   "type": "object",
   "additionalProperties": false,

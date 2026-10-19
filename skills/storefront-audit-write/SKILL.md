@@ -1,8 +1,8 @@
 ---
-name: qosmic-audit-write
+name: storefront-audit-write
 description: >
-  Serialize a Qosmic audit to the canonical audit.json schema and pass Gate B validation.
-  Use during the Write phase of a Qosmic audit, after reasoning is done.
+  Serialize a Storefront Audit audit to the canonical audit.json schema and pass Gate B validation.
+  Use during the Write phase of a Storefront Audit audit, after reasoning is done.
 ---
 
 # Write: audit.json to the canonical schema

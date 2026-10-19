@@ -26,7 +26,7 @@ is thin — the eval caught that without a human). That flag is the entry point 
    "Performance experiments keep losing `evidence_groundedness`" or "AOV is generic on
    single-SKU stores" become named, recurring defects.
 3. **Eval rewrites the harness:** each cluster is turned into a patch to the skill bodies
-   (`skills/qosmic-audit-*`) or a new Layer-1 validator in the `VALIDATORS` registry (it was
+   (`skills/storefront-audit-*`) or a new Layer-1 validator in the `VALIDATORS` registry (it was
    built to be appended to). A coding agent drafts the diff; eval output → harness change.
 4. **Eval-gated promotion (CI):** a candidate harness version is re-run on a frozen fleet of
    real stores; it promotes **only** if mean composite rises **and no pillar regresses**.

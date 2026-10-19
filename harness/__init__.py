@@ -1,4 +1,4 @@
-"""qosmic-audit-harness — runtime harness package.
+"""storefront-audit-harness — runtime harness package.
 
 Step 1 ships only the contract layer (schemas + validation). Crawl/reason/write
 phases land in later steps.

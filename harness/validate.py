@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Contract validation for qosmic-audit-harness.
+"""Contract validation for storefront-audit-harness.
 
 Two layers:
 
@@ -198,6 +198,61 @@ def _v_evidence_resolvable(audit, manifest):
     return issues
 
 
+_ACCESS_BARRIER_RE = re.compile(
+    r"(?:access barrier|blocked|bot[- ]?(?:protection|management)|challenge|"
+    r"\b(?:401|403|429|503)\b|inaccessible|not accessible|unreachable|"
+    r"network error|fetch error|failed to load|not assessable|could not "
+    r"(?:read|inspect|load|access)|cannot (?:read|inspect|load|access))",
+    re.IGNORECASE,
+)
+
+
+def _is_access_barrier_claim(text: str) -> bool:
+    """Return whether text explicitly describes an access failure, not page content."""
+    return bool(_ACCESS_BARRIER_RE.search(text or ""))
+
+
+def _v_inaccessible_evidence(audit, manifest):
+    pages = _pages_by_id(manifest)
+    issues = []
+    for e in audit["experiments"]:
+        page = pages.get(e["evidence"]["manifest_id"])
+        if page is None or page.get("access_status") not in {"blocked", "unavailable", "error", "empty"}:
+            continue
+        ev = e["evidence"]
+        # Keep the exception explicit and evidence-local: a barrier keyword in a
+        # recommendation title must not launder a content claim on a blocked page.
+        claim_text = str(ev.get("note") or "")
+        if not _is_access_barrier_claim(claim_text):
+            issues.append(Issue(
+                "error", "evidence_inaccessible",
+                f"Experiment {e['exp_id']} cites {page.get('access_status')} page "
+                f"{ev['manifest_id']} as content evidence; only an explicit access-barrier "
+                "claim may cite an inaccessible page.",
+                f"experiments[{e['exp_id']}].evidence.manifest_id",
+            ))
+    return issues
+
+
+def _v_inaccessible_technical_evidence(audit, manifest):
+    pages = _pages_by_id(manifest)
+    issues = []
+    for c in audit["technical_checks"]:
+        mid = c.get("evidence_manifest_id")
+        page = pages.get(mid) if mid else None
+        if page is None or page.get("access_status") not in {"blocked", "unavailable", "error", "empty"}:
+            continue
+        if not _is_access_barrier_claim(c.get("detail", "")):
+            issues.append(Issue(
+                "error", "technical_check_evidence_inaccessible",
+                f"Technical check '{c['check']}' cites {page.get('access_status')} page "
+                f"{mid} for page-content evidence; describe only the access barrier or "
+                "omit the evidence_manifest_id.",
+                f"technical_checks[{c['check']}].evidence_manifest_id",
+            ))
+    return issues
+
+
 def _v_evidence_path_consistency(audit, manifest):
     pages = _pages_by_id(manifest)
     issues = []
@@ -337,10 +392,12 @@ VALIDATORS = [
     Validator("pillar_coverage", False, _v_pillar_coverage),
     Validator("exp_id_duplicate", False, _v_exp_id_unique),
     Validator("evidence_unresolved", True, _v_evidence_resolvable),
+    Validator("evidence_inaccessible", True, _v_inaccessible_evidence),
     Validator("evidence_path_mismatch", True, _v_evidence_path_consistency),
     Validator("new_page_evidence_note", True, _v_new_page_evidence_note),
     Validator("competitor_source_unresolved", True, _v_competitor_source_resolvable),
     Validator("technical_check_evidence_unresolved", True, _v_technical_check_evidence_resolvable),
+    Validator("technical_check_evidence_inaccessible", True, _v_inaccessible_technical_evidence),
     Validator("canonical_tech_checks_missing", False, _v_canonical_tech_checks),
     Validator("pillar_balance", False, _v_pillar_balance),
     Validator("host_mismatch", False, _v_onsite_host_match),
@@ -392,7 +449,7 @@ def _load_json(path: str) -> dict:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
-        description="Validate qosmic-audit-harness manifest and/or audit contracts.")
+        description="Validate storefront-audit-harness manifest and/or audit contracts.")
     parser.add_argument("--audit", help="Path to an audit.json")
     parser.add_argument("--manifest", help="Path to a manifest.json")
     args = parser.parse_args(argv)

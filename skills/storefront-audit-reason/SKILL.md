@@ -1,9 +1,9 @@
 ---
-name: qosmic-audit-reason
+name: storefront-audit-reason
 description: >
   Reason over crawl artifacts to find revenue leaks across five CRO pillars and construct
   experiments with explicit hypotheses and evidence citations. Use during the Reason phase
-  of a Qosmic audit.
+  of a Storefront Audit audit.
 ---
 
 # Reason: artifacts → experiments
