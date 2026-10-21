@@ -95,3 +95,7 @@ python -m pytest tests/ -q
 
 The suite covers schema validation, evidence invariants, deterministic discovery, and mocked
 crawl behavior without requiring live internet access or an API key.
+
+## License
+
+[PolyForm Noncommercial 1.0.0](LICENSE): free to use, modify and share for noncommercial purposes. For commercial use (including reselling it as a paid skill or running it as a service for clients), contact the author.
